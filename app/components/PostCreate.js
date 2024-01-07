@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Button, Image, StyleSheet, Text, View } from "react-native";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import LabelInput from "./LabelInput";
-import { userState } from "../recoil/recoil";
 import { useRecoilValue } from "recoil";
-
 import axios from "axios";
+import AntDesign from "react-native-vector-icons/AntDesign";
+
+import LabelInput from "./LabelInput";
+import PostDatePicker from "./PostDatePicker";
+
+import { userState } from "../recoil/recoil";
 
 export default function PostCreate() {
   const [title, setTitle] = useState("");
@@ -15,6 +17,9 @@ export default function PostCreate() {
   const [image, setImage] = useState("");
   const [due, setDue] = useState(new Date()); // 날짜 상태
   const [show, setShow] = useState(false); // DateTimePicker 표시 상태
+
+  const [mode, setMode] = useState("date");
+  const [date, setDate] = useState(new Date());
 
   const user = useRecoilValue(userState);
 
@@ -87,19 +92,14 @@ export default function PostCreate() {
             onChangeText={setPrice}
             placeholder="가격을 입력하세요."
           />
-          <LabelInput
-            label="마감 기한"
-            value={due}
-            onChangeText={setDue}
-            placeholder="마감 기한을 선택하세요."
-          />
+          <PostDatePicker />
           <LabelInput
             label="내용"
             value={body}
             onChangeText={setBody}
             placeholder="내용을 입력하세요."
           />
-          <Button title="수정하기" onPress={handleSubmit} />
+          <Button title="추가하기" onPress={handleSubmit} />
         </View>
       </View>
     </View>

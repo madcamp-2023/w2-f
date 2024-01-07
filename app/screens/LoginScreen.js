@@ -3,15 +3,11 @@ import React, { useState } from "react";
 import { Button, View, Modal, Image, StyleSheet, Text } from "react-native";
 import KakaoLogin from "../components/KakaoLogin";
 
-export default function LoginScreen({ handleIsLoggedIn }) {
+export default function LoginScreen() {
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
 
   const handleLoginSuccess = (code) => {
     setLoginModalVisible(false);
-
-    if (code) {
-      handleIsLoggedIn(true);
-    }
   };
 
   return (
