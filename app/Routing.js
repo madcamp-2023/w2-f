@@ -16,6 +16,7 @@ import ProfileStack from "./stacks/ProfileStack";
 const Tab = createBottomTabNavigator();
 
 export default function Routing() {
+  //TODO : Loading
   const user = useRecoilValue(userState);
 
   return (

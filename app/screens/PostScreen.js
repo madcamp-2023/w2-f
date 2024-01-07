@@ -26,13 +26,13 @@ export default function PostScreen() {
         <View style={styles.header__location}>
           <DropdownLocation />
         </View>
-        <View style={{ marginRight: 10 }}>
+        {/* <View style={{ marginRight: 10 }}>
           <AntDesgin
             name="search1"
             size={30}
             onPress={() => navigation.navigate("PostSearch")}
           />
-        </View>
+        </View> */}
       </View>
       <View style={styles.post}>
         <View style={styles.post__header}>
@@ -43,7 +43,7 @@ export default function PostScreen() {
             지도로 보기
           </Text>
 
-          <Dropdown />
+          {/* <Dropdown /> */}
         </View>
         <View style={styles.post__main}>
           {nav === "Feed" ? <PostList /> : <PostMap />}

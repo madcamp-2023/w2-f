@@ -3,20 +3,24 @@ import { Button, View } from "react-native";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-export default function PostDatePicker() {
-  const [title, setTitle] = useState(null);
-  const [location, setLocation] = useState(null);
-  const [price, setPrice] = useState(null);
-  const [body, setBody] = useState(null);
-  const [image, setImage] = useState(null);
-
+export default function PostDatePicker({ handleDate, handleTime }) {
   const [show, setShow] = useState(false);
-  const [mode, setMode] = useState("date");
+  const [mode, setMode] = useState(null);
   const [date, setDate] = useState(new Date());
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
+    setShow(false); // 먼저 Picker를 닫음
+
+    console.log(selectedDate);
+
+    if (selectedDate) {
+      setDate(selectedDate); // 선택된 날짜/시간을 설정
+      if (mode === "date") {
+        handleDate(selectedDate);
+      } else if (mode === "time") {
+        handleTime(selectedDate);
+      }
+    }
   };
 
   const showMode = (currentMode) => {

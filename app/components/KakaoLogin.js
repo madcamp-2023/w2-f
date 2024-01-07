@@ -1,8 +1,9 @@
 import { View } from "react-native";
-import { WebView } from "react-native-webview";
 import { useRecoilState } from "recoil";
-import { userState } from "../recoil/recoil";
+import { WebView } from "react-native-webview";
 import axios from "axios";
+
+import { userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
 
 const REST_API_KEY = "406d35070a2f8f7ca0e51a1e894ffdc6";

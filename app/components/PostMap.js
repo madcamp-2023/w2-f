@@ -1,7 +1,21 @@
+import { useEffect, useState } from "react";
 import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
 export default function PostMap() {
+  // TODO:
+  // const [location, setLocation] = useState(null);
+
+  // useEffect(() => {
+  //   async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status === "granted") {
+  //       let location = await Location.getCurrentPositionAsync({});
+  //       setLocation(location);
+  //     }
+  //   };
+  // }, []);
+
   const locations = [
     {
       latitude: 37.78825,

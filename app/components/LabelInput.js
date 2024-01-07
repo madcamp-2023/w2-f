@@ -8,7 +8,7 @@ const LabelInput = ({ label, value, onChangeText, placeholder }) => {
       <TextInput
         style={styles.input}
         onChangeText={onChangeText}
-        value={value}
+        value={String(value)}
         placeholder={placeholder}
       />
     </View>
