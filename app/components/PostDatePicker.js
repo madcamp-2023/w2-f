@@ -10,9 +10,6 @@ export default function PostDatePicker({ handleDate, handleTime }) {
 
   const onChange = (event, selectedDate) => {
     setShow(false); // 먼저 Picker를 닫음
-
-    console.log(selectedDate);
-
     if (selectedDate) {
       setDate(selectedDate); // 선택된 날짜/시간을 설정
       if (mode === "date") {

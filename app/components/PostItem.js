@@ -1,14 +1,28 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useRecoilValue } from "recoil";
+import { userState } from "../recoil/recoil";
 
-const PostItem = ({ title, content, price, location, timestamp }) => {
+const PostItem = ({
+  id,
+  user_id,
+  title,
+  content,
+  price,
+  location,
+  timestamp,
+  image,
+}) => {
   const navigation = useNavigation();
+
+  const user = useRecoilValue(userState);
 
   return (
     <TouchableOpacity
       style={styles.postContainer}
       onPress={() =>
-        navigation.navigate("PostDetail", {
+        navigation.navigate("MyPostDetail", {
+          id,
           title,
           content,
           price,
@@ -19,7 +33,7 @@ const PostItem = ({ title, content, price, location, timestamp }) => {
     >
       <Image
         source={{
-          uri: "https://github.com/haejunejung/haejunejung.github.io/assets/99087502/d2817771-d076-4012-af8d-b2bd9330eea7",
+          uri: image,
         }}
         style={styles.postImage}
       />

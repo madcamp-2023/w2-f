@@ -14,8 +14,6 @@ export default function KakaoLogin({ onLoginSuccess }) {
   const [user, setUser] = useRecoilState(userState);
 
   const getCode = (url) => {
-    console.log(url);
-
     const regex = /[?&]code=(.*?)(?:&|$)/;
     const match = regex.exec(url);
     if (match && match[1]) {

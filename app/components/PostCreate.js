@@ -6,6 +6,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+import { useNavigation } from "@react-navigation/native";
+
 import LabelInput from "./LabelInput";
 import PostDatePicker from "./PostDatePicker";
 
@@ -13,6 +15,8 @@ import { userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
 
 export default function PostCreate() {
+  const navigation = useNavigation();
+
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState(0);
@@ -52,7 +56,7 @@ export default function PostCreate() {
         user_image: user.image,
         due: due,
       })
-      .then((response) => console.log(response));
+      .then(navigation.navigate("PostHome"));
   };
 
   const uploadImage = async () => {
@@ -76,6 +80,8 @@ export default function PostCreate() {
 
     const uri = result.assets[0].uri;
     setImage(uri);
+
+    console.log(uri);
   };
 
   return (

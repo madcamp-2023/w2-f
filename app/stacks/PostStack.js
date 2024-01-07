@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import PostScreen from "../screens/PostScreen";
 import PostCreate from "../components/PostCreate";
-import PostDetail from "../components/PostDetail";
+import MyPostDetail from "../components/MyPostDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +16,7 @@ export default function PostStack() {
     >
       <Stack.Screen name="PostHome" component={PostScreen} />
       <Stack.Screen name="PostCreate" component={PostCreate} />
-      <Stack.Screen name="PostDetail" component={PostDetail} />
+      <Stack.Screen name="MyPostDetail" component={MyPostDetail} />
     </Stack.Navigator>
   );
 }

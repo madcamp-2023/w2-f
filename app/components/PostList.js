@@ -5,10 +5,14 @@ import axios from "axios";
 import PostItem from "./PostItem";
 
 import { URI } from "../recoil/constant";
+import { useRecoilValue } from "recoil";
+import { postRefreshState } from "../recoil/recoil";
 
 export default function PostList() {
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState(null);
+
+  const postRefresh = useRecoilValue(postRefreshState);
 
   const onRefresh = async () => {
     if (!refreshing) {
@@ -38,12 +42,10 @@ export default function PostList() {
         .get(URI + "/post")
         .then((response) => response.data);
       setData(response);
-
-      console.log(response);
     };
 
     getPostList();
-  }, []);
+  }, [postRefresh]);
 
   return (
     <FlatList
@@ -55,14 +57,38 @@ export default function PostList() {
       onEndReached={onEndReached}
       onEndReachedThreshold={0.6}
       renderItem={({ item }) => {
-        const { title, content, price, location, timestamp } = item;
+        const {
+          id,
+          user_id,
+          title,
+          body,
+          price,
+          location,
+          due,
+          created_time,
+          image,
+        } = item;
+        console.log(
+          id,
+          user_id,
+          title,
+          body,
+          price,
+          location,
+          due,
+          created_time,
+          image
+        );
         return (
           <PostItem
+            id={id}
+            user_id={user_id}
+            image={image}
             title={title}
-            content={content}
+            content={body}
             price={price}
             location={location}
-            timestamp={timestamp}
+            timestamp={due}
           />
         );
       }}
