@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import axios from "axios";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import LabelInput from "./LabelInput";
 import PostDatePicker from "./PostDatePicker";
 
-import { userState } from "../recoil/recoil";
+import { postRefreshState, userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
 
 export default function PostCreate() {
@@ -29,6 +29,8 @@ export default function PostCreate() {
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const user = useRecoilValue(userState);
+
+  const [postRefresh, setPostRefresh] = useRecoilState(postRefreshState);
 
   const handleSubmit = async () => {
     function combineDateTime(date, time) {
@@ -56,7 +58,10 @@ export default function PostCreate() {
         user_image: user.image,
         due: due,
       })
-      .then(navigation.navigate("PostHome"));
+      .then(() => {
+        setPostRefresh((prev) => !prev);
+        navigation.navigate("PostHome");
+      });
   };
 
   const uploadImage = async () => {

@@ -69,14 +69,28 @@ export default function ProfileScreen() {
             keyExtractor={(item) => item.id.toString()}
             style={styles.container}
             renderItem={({ item }) => {
-              const { title, content, price, location, timestamp } = item;
+              const {
+                id,
+                user_id,
+                image,
+                body,
+                title,
+                content,
+                price,
+                location,
+                due,
+              } = item;
               return (
                 <PostItem
+                  id={id}
+                  user_id={user_id}
+                  image={image}
                   title={title}
-                  content={content}
+                  content={body}
                   price={price}
                   location={location}
-                  timestamp={timestamp}
+                  due={due}
+                  prev="ProfileHome"
                 />
               );
             }}

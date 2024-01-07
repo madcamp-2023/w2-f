@@ -69,6 +69,7 @@ export default function PostList() {
           image,
         } = item;
         console.log(
+          "!!!!",
           id,
           user_id,
           title,
@@ -88,7 +89,8 @@ export default function PostList() {
             content={body}
             price={price}
             location={location}
-            timestamp={due}
+            due={due}
+            prev="PostHome"
           />
         );
       }}

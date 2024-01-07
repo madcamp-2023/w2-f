@@ -6,30 +6,60 @@ import { userState } from "../recoil/recoil";
 const PostItem = ({
   id,
   user_id,
+  image,
   title,
   content,
   price,
   location,
-  timestamp,
-  image,
+  due,
+  prev,
 }) => {
   const navigation = useNavigation();
-
   const user = useRecoilValue(userState);
+
+  console.log(
+    "PostItem",
+    id,
+    user_id,
+    image,
+    title,
+    content,
+    price,
+    location,
+    due,
+    prev
+  );
 
   return (
     <TouchableOpacity
       style={styles.postContainer}
-      onPress={() =>
-        navigation.navigate("MyPostDetail", {
-          id,
-          title,
-          content,
-          price,
-          location,
-          timestamp,
-        })
-      }
+      onPress={() => {
+        console.log(user.id, user_id);
+        if (user && user.id === user_id) {
+          navigation.navigate("MyPostDetail", {
+            id,
+            user_id,
+            title,
+            content,
+            price,
+            location,
+            due,
+            image,
+            prev,
+          });
+        } else {
+          navigation.navigate("PostDetail", {
+            id,
+            user_id,
+            title,
+            content,
+            price,
+            location,
+            due,
+            image,
+          });
+        }
+      }}
     >
       <Image
         source={{
@@ -45,7 +75,7 @@ const PostItem = ({
         </View>
         <View style={styles.postContent__right}>
           <Text style={styles.location}>{location}</Text>
-          <Text style={styles.timestamp}>{timestamp}</Text>
+          <Text style={styles.due}>{due}</Text>
         </View>
       </View>
     </TouchableOpacity>
