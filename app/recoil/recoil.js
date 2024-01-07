@@ -1,9 +1,6 @@
-import { atom, selector } from "recoil";
-import axios from "axios";
-
-import { URI } from "./constant";
+import { atom } from "recoil";
 
 export const userState = atom({
-  key: "user",
+  key: "userState",
   default: null,
 });

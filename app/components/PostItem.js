@@ -8,7 +8,7 @@ const PostItem = ({ title, content, price, location, timestamp }) => {
     <TouchableOpacity
       style={styles.postContainer}
       onPress={() =>
-        navigation.navigate("MyPostDetail", {
+        navigation.navigate("PostDetail", {
           title,
           content,
           price,

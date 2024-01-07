@@ -37,6 +37,7 @@ export default function ProfileScreen() {
             price="price"
             location="location"
             timestamp="timestamp"
+            nav="My"
           />
         </View>
       </View>
