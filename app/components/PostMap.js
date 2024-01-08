@@ -3,19 +3,6 @@ import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
 export default function PostMap() {
-  // TODO:
-  // const [location, setLocation] = useState(null);
-
-  // useEffect(() => {
-  //   async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status === "granted") {
-  //       let location = await Location.getCurrentPositionAsync({});
-  //       setLocation(location);
-  //     }
-  //   };
-  // }, []);
-
   const locations = [
     {
       latitude: 37.78825,
@@ -29,7 +16,6 @@ export default function PostMap() {
       title: "Location 2",
       description: "Description 2",
     },
-    // Add more locations as needed
   ];
 
   return (
@@ -37,8 +23,8 @@ export default function PostMap() {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: 36.3711,
+          longitude: 127.3622,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}

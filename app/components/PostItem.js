@@ -41,6 +41,9 @@ const PostItem = ({
   const isLessThanOneHour =
     dueTime.days === 0 && dueTime.hours === 0 && dueTime.minutes > 0;
 
+  const truncatedContent =
+    content.length > 100 ? content.substring(0, 100) + "..." : content;
+
   if (dueTime.days <= 0 && dueTime.hours <= 0 && dueTime.minutes <= 0) {
     return;
   }
@@ -83,7 +86,7 @@ const PostItem = ({
           <Text style={styles.postTitle}>{title}</Text>
           <Text style={styles.postPrice}>₩ {price}</Text>
         </View>
-        <Text style={styles.postContent}>{content}</Text>
+        <Text style={styles.postContent}>{truncatedContent}</Text>
         <View style={styles.postFooter}>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <Entypo name="location-pin" size={20} />
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 10,
     marginBottom: 10,
-    color: "#525252",
+    color: "#A4A4A4",
   },
 
   postPrice: {

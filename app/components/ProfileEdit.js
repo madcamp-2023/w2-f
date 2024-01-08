@@ -104,6 +104,10 @@ const ProfileEdit = () => {
       });
   };
 
+  const handleSelectLocation = () => {
+    navigation.navigate("SelectLocation");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -156,7 +160,7 @@ const ProfileEdit = () => {
               }}
             >
               <LocationItem label={location} />
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handleSelectLocation}>
                 <AntDesgin
                   name="pluscircleo"
                   size={30}
