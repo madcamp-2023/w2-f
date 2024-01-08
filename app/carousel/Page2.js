@@ -8,8 +8,12 @@ export default function Page2() {
   return (
     <View style={styles.container}>
       <Image source={Avatar} style={styles.image} />
-      <Text style={styles.content}>
-        누군가가 해줬으면 하는 일이 있지 않았나요?
+      <Text style={styles.content}>이런 생각 해보셨나요?</Text>
+      <Text style={{ color: "#A4A4A4" }}>그냥 차라리 돈 좀 쓰고</Text>
+      <Text style={{ color: "#A4A4A4" }}>일들이 해결되면 좋겠다고...</Text>
+      <Text style={{ color: "#A4A4A4" }}>{""}</Text>
+      <Text style={{ marginTop: 10, fontSize: 20 }}>
+        누가 나 대신 해주면 좋겠는데!
       </Text>
       <View style={styles.position}>
         <Text style={styles.position__pt}>⸰</Text>
@@ -35,9 +39,10 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    color: text_color,
-    fontSize: contentSize,
-    marginTop: 50,
+    color: "#16459E",
+    fontSize: 30,
+    marginTop: 10,
+    marginBottom: 10,
   },
 
   position: {
@@ -51,7 +56,6 @@ const styles = StyleSheet.create({
   position__pt: {
     marginLeft: 10,
     marginRight: 10,
-    color: text_color,
     fontSize: contentSize,
   },
 });

@@ -72,8 +72,6 @@ export default function PostScreen() {
         <Image source={Banner} style={{ width: "100%", height: 100 }} />
         <View style={styles.post__main}>
           {nav === "Feed" ? <PostList /> : <PostMap />}
-
-          {/* //TODO : navigate : createPost */}
           <TouchableOpacity
             style={styles.createPost}
             onPress={() => navigation.navigate("PostCreate")}
@@ -81,8 +79,8 @@ export default function PostScreen() {
             <AntDesgin
               name="pluscircleo"
               size={40}
-              color="#000"
-              style={{ backgroundColor: "white", borderRadius: 30 }}
+              color="#fff"
+              style={{ backgroundColor: "#16459E", borderRadius: 40 }}
             />
           </TouchableOpacity>
         </View>

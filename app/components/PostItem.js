@@ -81,7 +81,7 @@ const PostItem = ({
       <View style={styles.post}>
         <View style={styles.postContent__header}>
           <Text style={styles.postTitle}>{title}</Text>
-          <Text style={styles.postPrice}>$ {price}</Text>
+          <Text style={styles.postPrice}>₩ {price}</Text>
         </View>
         <Text style={styles.postContent}>{content}</Text>
         <View style={styles.postFooter}>
@@ -160,6 +160,5 @@ const styles = StyleSheet.create({
 
   postFooter: {
     flexDirection: "row",
-    justifyContent: "space-between",
   },
 });

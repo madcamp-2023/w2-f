@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     margin: 10,
+    marginLeft: 20,
+    marginRight: 20,
   },
   label: {
     flexBasis: 60,
@@ -30,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomColor: "gray",
     borderBottomWidth: 1,
-    padding: 10,
+    padding: 5,
   },
 });
 

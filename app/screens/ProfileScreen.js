@@ -50,13 +50,13 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.profile} onPress={handlePress}>
-        <Text style={{ marginRight: 20 }}>{user.name}</Text>
         <Image
           source={{
             uri: user.image,
           }}
           style={styles.image}
         />
+        <Text style={{ marginRight: 20 }}>{user.name}</Text>
       </TouchableOpacity>
       <View style={styles.post}>
         <View style={styles.post__header}>
@@ -108,14 +108,15 @@ const styles = StyleSheet.create({
 
   profile: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: 30,
+    padding: 20,
+    marginTop: 20,
   },
 
   image: {
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
     borderRadius: 100,
     marginRight: 20,
   },
@@ -137,6 +138,11 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    padding: 10,
+    padding: 5,
+    borderBottomWidth: 4,
+    borderBottomColor: "black",
+    paddingBottom: 5,
+    marginRight: 5,
+    marginLeft: 20,
   },
 });

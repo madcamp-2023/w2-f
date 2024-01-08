@@ -1,37 +1,54 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   Alert,
-  Button,
   Image,
   StyleSheet,
   View,
   Pressable,
   Text,
-  Modal,
+  TouchableOpacity,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import AntDesgin from "react-native-vector-icons/AntDesign";
+import Feather from "react-native-vector-icons/Feather";
+
+import { useNavigation } from "@react-navigation/native";
 
 import LabelInput from "./LabelInput";
 
 import { userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
-import LocationModal from "./LocationModal";
+
+const LocationItem = ({ label }) => {
+  return (
+    <View
+      style={{
+        backgroundColor: "#ECECEC",
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 10,
+        borderRadius: 20,
+      }}
+    >
+      <Text style={{ marginRight: 10 }}>{label}</Text>
+      <Feather name="x" size={15} color="gray" />
+    </View>
+  );
+};
 
 const ProfileEdit = () => {
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
+  const navigation = useNavigation();
 
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [bio, setBio] = useState("");
+  const [name, setName] = useState(user.name);
+  const [location, setLocation] = useState(user.location);
+  const [bio, setBio] = useState(user.bio);
   const [imageUrl, setImageUrl] = useState(user.image);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-
-  const [showEOptions, setShowEOptions] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (user.image) {
@@ -62,11 +79,8 @@ const ProfileEdit = () => {
     setImageUrl(uri);
   };
 
-  const handleSubmit = () => {
-    //TODO: POST, userState 변경
-    Alert.alert("프로필 업데이트!");
-
-    axios
+  const handleSubmit = async () => {
+    await axios
       .patch(URI + "/user", {
         id: user.id,
         bio: bio,
@@ -75,7 +89,18 @@ const ProfileEdit = () => {
         name: name,
       })
       .then((response) => {
-        console.log(response.data);
+        navigation.navigate("ProfileHome");
+
+        const userData = response.data;
+        const { bio, id, image, kakao_id, location, name } = userData;
+        setUser({
+          id: id,
+          name: name,
+          image: image,
+          bio: bio,
+          kakao_id: kakao_id,
+          location: location,
+        });
       });
   };
 
@@ -105,63 +130,46 @@ const ProfileEdit = () => {
           onChangeText={setBio}
           placeholder={user.bio === null ? "자기소개를 입력하세요." : user.bio}
         />
-        <LabelInput
-          label="주요위치"
-          value={location}
-          onChangeText={setLocation}
-          placeholder={
-            user.location === null ? "주요위치를 선택하세요." : user.location
-          }
-        />
-        {/* <View
+        <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
             margin: 10,
+            marginLeft: 20,
+            marginRight: 20,
           }}
         >
-          <Text style={{ flexBasis: 60 }}>주요 위치</Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <Pressable
-              onPress={() => {
-                setShowEOptions(true);
-                console.log("!");
-              }}
-            >
-              <Text>E</Text>
-            </Pressable>
-            <Pressable onPress={() => setShowEOptions(true)}>
-              <Text>W</Text>
-            </Pressable>
-            <Pressable onPress={() => setShowEOptions(true)}>
-              <Text>N</Text>
-            </Pressable>
-          </View>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
+          <Text style={{ flexBasis: 60 }}>주요위치</Text>
+          <View
+            style={{
+              flex: 1,
+              borderBottomColor: "gray",
+              borderBottomWidth: 1,
             }}
           >
-            <View style={styles.modalView}>
-              {eOptions.map((option) => (
-                <Pressable
-                  key={option}
-                  onPress={() => {
-                    setLocation(option);
-                    setModalVisible(false);
-                  }}
-                >
-                  <Text style={styles.modalText}>{option}</Text>
-                </Pressable>
-              ))}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <LocationItem label={location} />
+              <TouchableOpacity>
+                <AntDesgin
+                  name="pluscircleo"
+                  size={30}
+                  color="#fff"
+                  style={{ backgroundColor: "#16459E", borderRadius: 30 }}
+                />
+              </TouchableOpacity>
             </View>
-          </Modal>
-        </View> */}
-        <Button title="수정하기" onPress={handleSubmit} />
+          </View>
+        </View>
+        <Pressable onPress={handleSubmit} style={styles.submit}>
+          <Text style={{ color: "white", fontSize: 24 }}>저장하기</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -188,7 +196,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 
   imageContainer: {
@@ -228,6 +236,19 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+
+  submit: {
+    width: "100%",
+    height: "10%",
+
+    position: "absolute",
+    bottom: 0,
+
+    backgroundColor: "#16459E",
+
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
