@@ -1,5 +1,6 @@
 import { useRecoilValue } from "recoil";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Entypo from "react-native-vector-icons/Entypo";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -19,19 +20,6 @@ const PostItem = ({
 }) => {
   const navigation = useNavigation();
   const user = useRecoilValue(userState);
-
-  console.log(
-    "PostItem",
-    id,
-    user_id,
-    image,
-    title,
-    content,
-    price,
-    location,
-    due,
-    prev
-  );
 
   return (
     <TouchableOpacity
@@ -66,58 +54,75 @@ const PostItem = ({
         }
       }}
     >
-      <Image
-        source={{
-          uri: image,
-        }}
-        style={styles.postImage}
-      />
       <View style={styles.post}>
-        <View style={styles.postCotent__left}>
+        <View style={styles.postContent__header}>
           <Text style={styles.postTitle}>{title}</Text>
-          <Text style={styles.postContent}>{content}</Text>
-          <Text style={styles.postPrice}>{price}</Text>
+          <Text style={styles.postPrice}>$ {price}</Text>
         </View>
-        <View style={styles.postContent__right}>
-          <Text style={styles.location}>{location}</Text>
-          <Text style={styles.due}>{due}</Text>
+        <Text style={styles.postContent}>{content}</Text>
+        <View style={styles.postFooter}>
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <Entypo name="location-pin" size={20} />
+            <Text>{location}</Text>
+          </View>
+          <Text>{due}</Text>
         </View>
+        <View style={styles.postContent__right}></View>
       </View>
     </TouchableOpacity>
   );
 };
-
+// location-pin
 export default PostItem;
 
 const styles = StyleSheet.create({
   postContainer: {
     flexDirection: "row",
-    padding: 10,
-    borderBottomWidth: 1,
     justifyContent: "center",
     alignItems: "center",
 
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fff",
+    borderBottomWidth: 0.3,
+    borderBottomColor: "#474747",
   },
-  postImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
+
   post: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
+    padding: 20,
   },
+
   postTitle: {
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 20,
   },
+
+  postContent__header: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
+
+  postContent: {
+    height: 50,
+    marginTop: 10,
+    marginBottom: 10,
+    color: "#525252",
+  },
+
+  postPrice: {
+    marginLeft: 10,
+    color: "blue",
+  },
+
   postCotent__left: {
+    flex: 1,
     flexDirection: "column",
   },
-  postContent__right: {
-    flexDirection: "column",
+
+  postFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

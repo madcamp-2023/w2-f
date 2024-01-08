@@ -6,34 +6,6 @@ import styled from "@emotion/native";
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
-const DropdownItem = ({ label, isActive, disabled, onClick }) => {
-  const getTextColor = () => {
-    if (disabled) {
-      return "#313131";
-    } else if (isActive) {
-      return "#131313";
-    } else {
-      return "#000000";
-    }
-  };
-
-  return (
-    <Pressable
-      style={{
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-      }}
-      disabled={disabled}
-      onPress={() => {
-        if (onClick) {
-          onClick(label);
-        }
-      }}
-    >
-      <Text style={[{ color: getTextColor() }]}>{label}</Text>
-    </Pressable>
-  );
-};
 
 const DropdownLocation = () => {
   useFocusEffect(
@@ -53,6 +25,7 @@ const DropdownLocation = () => {
           setCheck(!check);
         }}
       >
+        {/* //TODO:  */}
         <DropDownText>글 수정</DropDownText>
         {check === true ? (
           <DropDownView>
@@ -71,7 +44,6 @@ const DropdownLocation = () => {
 
 const EditDeleteBtn = styled.View`
   position: absolute;
-  left: 10px;
   top: -10px;
 `;
 

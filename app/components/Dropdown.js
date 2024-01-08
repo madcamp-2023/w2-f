@@ -1,5 +1,6 @@
-import { Pressable, Text, TouchableOpacity } from "react-native";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 import styled from "@emotion/native";
 
@@ -7,35 +8,6 @@ import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { postStatusState } from "../recoil/recoil";
-
-const DropdownItem = ({ label, isActive, disabled, onClick }) => {
-  const getTextColor = () => {
-    if (disabled) {
-      return "#313131";
-    } else if (isActive) {
-      return "#131313";
-    } else {
-      return "#000000";
-    }
-  };
-
-  return (
-    <Pressable
-      style={{
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-      }}
-      disabled={disabled}
-      onPress={() => {
-        if (onClick) {
-          onClick(label);
-        }
-      }}
-    >
-      <Text style={[{ color: getTextColor() }]}>{label}</Text>
-    </Pressable>
-  );
-};
 
 const Dropdown = () => {
   useFocusEffect(
@@ -48,70 +20,83 @@ const Dropdown = () => {
 
   const [check, setCheck] = useState(false);
   const [postStatus, setPostStatus] = useRecoilState(postStatusState);
+  const [status, setStatus] = useState("최신순");
 
   return (
-    <EditDeleteBtn>
+    <View>
       <TouchableOpacity
         onPress={() => {
-          setCheck(true);
+          setCheck((prev) => !prev);
         }}
       >
-        <Entypo name="dots-three-horizontal" size={17} color="#AAAAAA" />
+        <View
+          style={{
+            flexDirection: "row",
+            backgroundColor: "#ECECEC",
+            padding: 10,
+            borderRadius: 20,
+            marginBottom: 10,
+          }}
+        >
+          <Text style={{ marginRight: 10 }}>{status}</Text>
+          <AntDesign name="caretdown" size={20} />
+        </View>
         {check === true ? (
-          <DropDownView>
-            <DropDownItem>
-              <DropDownText
-                onPress={() => {
-                  setPostStatus("new");
-                  setCheck(false);
-                }}
-              >
-                최신순
-              </DropDownText>
-            </DropDownItem>
-            <DropDownItem>
-              <DropDownText
-                onPress={() => {
-                  setPostStatus("price");
-                  setCheck(false);
-                }}
-              >
-                가격 높은 순
-              </DropDownText>
-            </DropDownItem>
-            <DropDownItem>
-              <DropDownText
-                onPress={() => {
-                  setPostStatus("due");
-                  setCheck(false);
-                }}
-              >
-                마감 임박 순
-              </DropDownText>
-            </DropDownItem>
-          </DropDownView>
+          <View>
+            <DropDownView>
+              <DropDownItem>
+                <DropDownText
+                  onPress={() => {
+                    setPostStatus("new");
+                    setCheck(false);
+                    setStatus("최신순");
+                  }}
+                >
+                  최신 순
+                </DropDownText>
+                <DropDownText
+                  onPress={() => {
+                    setPostStatus("price");
+                    setCheck(false);
+                    setStatus("가격높은순");
+                  }}
+                >
+                  가격 높은 순
+                </DropDownText>
+                <DropDownText
+                  onPress={() => {
+                    setPostStatus("due");
+                    setCheck(false);
+                    setStatus("마감순");
+                  }}
+                >
+                  마감 순
+                </DropDownText>
+              </DropDownItem>
+            </DropDownView>
+          </View>
         ) : null}
       </TouchableOpacity>
-    </EditDeleteBtn>
+    </View>
   );
 };
+
+const DropDownView = styled.View`
+  position: absolute;
+  width: 100px;
+  height: 110px;
+  top: 1px;
+  right: 1px;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+`;
 
 const EditDeleteBtn = styled.View`
   position: absolute;
   right: 15px;
   top: 10px;
-`;
-
-const DropDownView = styled.View`
-  position: absolute;
-  margin-top: 31px;
-  right: -15px;
-  width: 100px;
-  height: 110px;
-  border-radius: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: white;
 `;
 
 const DropDownItem = styled.TouchableOpacity`
@@ -124,9 +109,7 @@ const DropDownItem = styled.TouchableOpacity`
 `;
 
 const DropDownText = styled.Text`
-  text-align: center;
-  font-size: 18px;
-  color: black;
+  margin-bottom: 10px;
 `;
 
 export default Dropdown;

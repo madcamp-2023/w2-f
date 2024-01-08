@@ -1,5 +1,6 @@
 import {
   Button,
+  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -16,6 +17,8 @@ import PostMap from "../components/PostMap";
 import Dropdown from "../components/Dropdown";
 import DropdownLocation from "../components/DropdownLocation";
 
+import Avatar from "../assets/avatar6.png";
+
 export default function PostScreen() {
   const navigation = useNavigation();
   const [nav, setNav] = useState("Feed");
@@ -26,24 +29,36 @@ export default function PostScreen() {
         <View style={styles.header__location}>
           <DropdownLocation />
         </View>
-        {/* <View style={{ marginRight: 10 }}>
-          <AntDesgin
-            name="search1"
-            size={30}
-            onPress={() => navigation.navigate("PostSearch")}
-          />
-        </View> */}
       </View>
       <View style={styles.post}>
         <View style={styles.post__header}>
-          <Text style={styles.text} onPress={() => setNav("Feed")}>
-            피드로 보기
-          </Text>
-          <Text style={styles.text} onPress={() => setNav("Map")}>
-            지도로 보기
-          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.text} onPress={() => setNav("Feed")}>
+              목록
+            </Text>
+            <Text style={styles.text} onPress={() => setNav("Map")}>
+              지도
+            </Text>
+          </View>
 
-          <Dropdown />
+          <View>
+            <Dropdown />
+          </View>
+        </View>
+
+        <View style={styles.banner}>
+          <Text>
+            언제든지{" "}
+            <Text
+              style={{
+                color: "blue",
+              }}
+            >
+              불러
+            </Text>{" "}
+            주세요.
+          </Text>
+          <Image source={Avatar} style={styles.image} />
         </View>
         <View style={styles.post__main}>
           {nav === "Feed" ? <PostList /> : <PostMap />}
@@ -70,7 +85,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    marginTop: 30,
+    padding: 20,
+    marginTop: 20,
   },
 
   header__location: {
@@ -87,10 +103,10 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    marginRight: 20,
+    height: "100%",
+    resizeMode: "contain",
+    width: 70,
+    height: 70,
   },
 
   post: {
@@ -103,6 +119,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "black",
     zIndex: 1,
+    paddingLeft: 10,
+    justifyContent: "space-between",
   },
 
   post__main: {
@@ -125,5 +143,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
+  },
+
+  banner: {
+    marginLeft: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
