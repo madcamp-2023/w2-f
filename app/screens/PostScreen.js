@@ -68,7 +68,12 @@ export default function PostScreen() {
             style={styles.createPost}
             onPress={() => navigation.navigate("PostCreate")}
           >
-            <AntDesgin name="pluscircleo" size={30} color="#000" />
+            <AntDesgin
+              name="pluscircleo"
+              size={40}
+              color="#000"
+              style={{ backgroundColor: "white", borderRadius: 30 }}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -143,6 +148,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
+    zIndex: 1000,
+    elevation: 1000,
   },
 
   banner: {

@@ -39,7 +39,11 @@ const Dropdown = () => {
           }}
         >
           <Text style={{ marginRight: 10 }}>{status}</Text>
-          <AntDesign name="caretdown" size={20} />
+          {check === false ? (
+            <AntDesign name="caretdown" size={20} />
+          ) : (
+            <AntDesign name="caretup" size={20} />
+          )}
         </View>
         {check === true ? (
           <View>
