@@ -13,8 +13,18 @@ import LabelInput from "./LabelInput";
 import PostDatePicker from "./PostDatePicker";
 
 const MyPostDetail = ({ route }) => {
-  const { id, user_id, title, content, price, location, due, image, prev } =
-    route.params;
+  const {
+    id,
+    user_id,
+    title,
+    content,
+    price,
+    location,
+    due,
+    image,
+    prev,
+    chat_number,
+  } = route.params;
 
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
@@ -35,7 +45,8 @@ const MyPostDetail = ({ route }) => {
     location,
     due,
     image,
-    prev
+    prev,
+    chat_number
   );
 
   const navigation = useNavigation();

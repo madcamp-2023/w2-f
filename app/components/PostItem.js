@@ -1,6 +1,8 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useRecoilValue } from "recoil";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+import { useNavigation } from "@react-navigation/native";
+
 import { userState } from "../recoil/recoil";
 
 const PostItem = ({
@@ -13,6 +15,7 @@ const PostItem = ({
   location,
   due,
   prev,
+  chat_number,
 }) => {
   const navigation = useNavigation();
   const user = useRecoilValue(userState);
@@ -45,6 +48,7 @@ const PostItem = ({
             location,
             due,
             image,
+            chat_number,
             prev,
           });
         } else {
@@ -56,6 +60,7 @@ const PostItem = ({
             price,
             location,
             due,
+            chat_number,
             image,
           });
         }

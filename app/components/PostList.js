@@ -6,34 +6,23 @@ import PostItem from "./PostItem";
 
 import { URI } from "../recoil/constant";
 import { useRecoilValue } from "recoil";
-import { postRefreshState } from "../recoil/recoil";
+import { postRefreshState, postStatusState } from "../recoil/recoil";
 
 export default function PostList() {
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState(null);
 
   const postRefresh = useRecoilValue(postRefreshState);
+  const postStatus = useRecoilValue(postStatusState);
 
   const onRefresh = async () => {
     if (!refreshing) {
       const response = await axios
         .get(URI + "/post")
         .then((response) => response.data);
+      console.log(response);
       setData(response);
     }
-  };
-
-  const getData = async () => {
-    const response = await axios
-      .get(URI + "/post")
-      .then((response) => response.data);
-    setData(response);
-  };
-
-  const onEndReached = () => {
-    // if (!loading) {
-    //   getData();
-    // }
   };
 
   useEffect(() => {
@@ -47,6 +36,30 @@ export default function PostList() {
     getPostList();
   }, [postRefresh]);
 
+  useEffect(() => {
+    if (data) {
+      let sortedData;
+      switch (postStatus) {
+        case "new":
+          sortedData = [...data].sort(
+            (a, b) => new Date(b.created_time) - new Date(a.created_time)
+          );
+          break;
+        case "price":
+          sortedData = [...data].sort((a, b) => b.price - a.price);
+          break;
+        case "due":
+          sortedData = [...data].sort(
+            (a, b) => new Date(a.due) - new Date(b.due)
+          );
+          break;
+        default:
+          sortedData = data;
+      }
+      setData(sortedData);
+    }
+  }, [postStatus]);
+
   return (
     <FlatList
       data={data}
@@ -54,8 +67,6 @@ export default function PostList() {
       style={styles.container}
       onRefresh={onRefresh}
       refreshing={refreshing}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={0.6}
       renderItem={({ item }) => {
         const {
           id,
@@ -65,21 +76,11 @@ export default function PostList() {
           price,
           location,
           due,
-          created_time,
           image,
-        } = item;
-        console.log(
-          "!!!!",
-          id,
-          user_id,
-          title,
-          body,
-          price,
-          location,
-          due,
+          user_name,
           created_time,
-          image
-        );
+          chat_number,
+        } = item;
         return (
           <PostItem
             id={id}
@@ -88,8 +89,10 @@ export default function PostList() {
             title={title}
             content={body}
             price={price}
+            user_name={user_name}
             location={location}
             due={due}
+            chat_number={chat_number}
             prev="PostHome"
           />
         );

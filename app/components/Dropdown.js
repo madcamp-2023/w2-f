@@ -5,6 +5,8 @@ import styled from "@emotion/native";
 
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { postStatusState } from "../recoil/recoil";
 
 const DropdownItem = ({ label, isActive, disabled, onClick }) => {
   const getTextColor = () => {
@@ -45,23 +47,48 @@ const Dropdown = () => {
   );
 
   const [check, setCheck] = useState(false);
+  const [postStatus, setPostStatus] = useRecoilState(postStatusState);
 
   return (
     <EditDeleteBtn>
       <TouchableOpacity
         onPress={() => {
-          setCheck(!check);
+          setCheck(true);
         }}
       >
         <Entypo name="dots-three-horizontal" size={17} color="#AAAAAA" />
         {check === true ? (
           <DropDownView>
-            <DropDownEdit>
-              <DropDownText>글 수정</DropDownText>
-            </DropDownEdit>
-            <DropDownDelete>
-              <DropDownText>글 삭제</DropDownText>
-            </DropDownDelete>
+            <DropDownItem>
+              <DropDownText
+                onPress={() => {
+                  setPostStatus("new");
+                  setCheck(false);
+                }}
+              >
+                최신순
+              </DropDownText>
+            </DropDownItem>
+            <DropDownItem>
+              <DropDownText
+                onPress={() => {
+                  setPostStatus("price");
+                  setCheck(false);
+                }}
+              >
+                가격 높은 순
+              </DropDownText>
+            </DropDownItem>
+            <DropDownItem>
+              <DropDownText
+                onPress={() => {
+                  setPostStatus("due");
+                  setCheck(false);
+                }}
+              >
+                마감 임박 순
+              </DropDownText>
+            </DropDownItem>
           </DropDownView>
         ) : null}
       </TouchableOpacity>
@@ -87,21 +114,12 @@ const DropDownView = styled.View`
   background-color: white;
 `;
 
-const DropDownEdit = styled.TouchableOpacity`
+const DropDownItem = styled.TouchableOpacity`
   margin-left: 15px;
   margin-right: 15px;
   padding-top: 8px;
   padding-bottom: 10px;
   border-bottom-width: 0.3px;
-  border-color: white;
-`;
-
-const DropDownDelete = styled.TouchableOpacity`
-  margin-left: 15px;
-  margin-right: 15px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-top-width: 0.3px;
   border-color: white;
 `;
 

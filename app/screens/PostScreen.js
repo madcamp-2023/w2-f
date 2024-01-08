@@ -43,7 +43,7 @@ export default function PostScreen() {
             지도로 보기
           </Text>
 
-          {/* <Dropdown /> */}
+          <Dropdown />
         </View>
         <View style={styles.post__main}>
           {nav === "Feed" ? <PostList /> : <PostMap />}

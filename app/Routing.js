@@ -12,6 +12,7 @@ import LoginScreen from "./screens/LoginScreen";
 import PostStack from "./stacks/PostStack";
 import ChatStack from "./stacks/ChatStack";
 import ProfileStack from "./stacks/ProfileStack";
+import MainCover from "./carousel/MainCover";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,53 +22,45 @@ export default function Routing() {
 
   return (
     <View style={styles.container}>
-      {!user ? (
-        <LoginScreen />
-      ) : (
-        <NavigationContainer>
-          <Tab.Navigator
-            screenOptions={{
-              tabBarShowLabel: false,
-              headerShown: false,
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarShowLabel: false,
+            headerShown: false,
+          }}
+        >
+          <Tab.Screen
+            name="Post"
+            component={PostStack}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <MaterialCommunityIcons name="post" size={size} color={color} />
+              ),
+              tabBarLabel: "Post",
             }}
-          >
-            <Tab.Screen
-              name="Post"
-              component={PostStack}
-              options={{
-                tabBarIcon: ({ focused, color, size }) => (
-                  <MaterialCommunityIcons
-                    name="post"
-                    size={size}
-                    color={color}
-                  />
-                ),
-                tabBarLabel: "Post",
-              }}
-            />
-            <Tab.Screen
-              name="Chat"
-              component={ChatStack}
-              options={{
-                tabBarIcon: ({ focused, color, size }) => (
-                  <Entypo name="chat" size={size} color={color} />
-                ),
-                tabBarLabel: "Chat",
-              }}
-            />
-            <Tab.Screen
-              name="Profile"
-              component={ProfileStack}
-              options={{
-                tabBarIcon: ({ focused, color, size }) => (
-                  <Fontisto name="person" size={size} color={color} />
-                ),
-                tabBarLabel: "Profile",
-              }}
-            />
-          </Tab.Navigator>
-        </NavigationContainer>
-      )}
+          />
+          <Tab.Screen
+            name="Chat"
+            component={ChatStack}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Entypo name="chat" size={size} color={color} />
+              ),
+              tabBarLabel: "Chat",
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileStack}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Fontisto name="person" size={size} color={color} />
+              ),
+              tabBarLabel: "Profile",
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
     </View>
   );
 }
