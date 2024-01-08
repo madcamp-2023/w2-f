@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Image,
@@ -12,31 +13,53 @@ import { useNavigation } from "@react-navigation/native";
 import AntDesgin from "react-native-vector-icons/AntDesign";
 
 import PostList from "../components/PostList";
-import { useState } from "react";
 import PostMap from "../components/PostMap";
 import Dropdown from "../components/Dropdown";
-import DropdownLocation from "../components/DropdownLocation";
-
-import Avatar from "../assets/avatar6.png";
+import Banner from "../assets/banner.png";
+import { useRecoilValue } from "recoil";
+import { userState } from "../recoil/recoil";
 
 export default function PostScreen() {
   const navigation = useNavigation();
   const [nav, setNav] = useState("Feed");
 
+  const user = useRecoilValue(userState);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.header__location}>
-          <DropdownLocation />
+          <TouchableOpacity
+            onPress={() => {
+              console.log("TODO");
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontSize: 20, marginRight: 10 }}>N1</Text>
+              <AntDesgin name="down" size={20} />
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.post}>
         <View style={styles.post__header}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.text} onPress={() => setNav("Feed")}>
+            <Text
+              style={nav === "Feed" ? styles.selectedText : styles.text}
+              onPress={() => setNav("Feed")}
+            >
               목록
             </Text>
-            <Text style={styles.text} onPress={() => setNav("Map")}>
+            <Text
+              style={nav === "Map" ? styles.selectedText : styles.text}
+              onPress={() => setNav("Map")}
+            >
               지도
             </Text>
           </View>
@@ -46,20 +69,7 @@ export default function PostScreen() {
           </View>
         </View>
 
-        <View style={styles.banner}>
-          <Text>
-            언제든지{" "}
-            <Text
-              style={{
-                color: "blue",
-              }}
-            >
-              불러
-            </Text>{" "}
-            주세요.
-          </Text>
-          <Image source={Avatar} style={styles.image} />
-        </View>
+        <Image source={Banner} style={{ width: "100%", height: 100 }} />
         <View style={styles.post__main}>
           {nav === "Feed" ? <PostList /> : <PostMap />}
 
@@ -124,7 +134,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "black",
     zIndex: 1,
-    paddingLeft: 10,
+    paddingLeft: 15,
     justifyContent: "space-between",
   },
 
@@ -133,8 +143,17 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
 
+  selectedText: {
+    padding: 5,
+    borderBottomWidth: 4,
+    borderBottomColor: "black",
+    paddingBottom: 5,
+    marginRight: 5,
+  },
+
   text: {
-    padding: 10,
+    padding: 5,
+    marginRight: 5,
   },
 
   dropdownContainer: {

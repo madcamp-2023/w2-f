@@ -32,10 +32,9 @@ const Dropdown = () => {
         <View
           style={{
             flexDirection: "row",
-            backgroundColor: "#ECECEC",
-            padding: 10,
             borderRadius: 20,
             marginBottom: 10,
+            marginRight: 10,
           }}
         >
           <Text style={{ marginRight: 10 }}>{status}</Text>

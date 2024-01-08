@@ -1,6 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -16,10 +17,33 @@ const PostItem = ({
   location,
   due,
   prev,
+  created_time,
   chat_number,
 }) => {
   const navigation = useNavigation();
   const user = useRecoilValue(userState);
+
+  const calculateTimeLeft = (due) => {
+    const dueDate = new Date(due);
+    const now = new Date();
+
+    const difference = dueDate - now;
+
+    // 일 시간, 분, 초 및 밀리초 단위로 변환
+    const daysLeft = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hoursLeft = Math.floor((difference / (1000 * 60 * 60)) % 24);
+    const minutesLeft = Math.floor((difference / (1000 * 60)) % 60);
+
+    return { days: daysLeft, hours: hoursLeft, minutes: minutesLeft };
+  };
+
+  const dueTime = calculateTimeLeft(due);
+  const isLessThanOneHour =
+    dueTime.days === 0 && dueTime.hours === 0 && dueTime.minutes > 0;
+
+  if (dueTime.days <= 0 && dueTime.hours <= 0 && dueTime.minutes <= 0) {
+    return;
+  }
 
   return (
     <TouchableOpacity
@@ -65,7 +89,19 @@ const PostItem = ({
             <Entypo name="location-pin" size={20} />
             <Text>{location}</Text>
           </View>
-          <Text>{due}</Text>
+          <MaterialIcons name="timer" size={20} style={{ marginRight: 5 }} />
+          {dueTime.minutes > 0 && (
+            <Text style={isLessThanOneHour ? { color: "red" } : null}>
+              마감까지{" "}
+            </Text>
+          )}
+          {dueTime.days > 0 && <Text>{dueTime.days}일 </Text>}
+          {dueTime.hours > 0 && <Text>{dueTime.hours}시간 </Text>}
+          {dueTime.minutes > 0 && (
+            <Text style={isLessThanOneHour ? { color: "red" } : null}>
+              {dueTime.minutes}분
+            </Text>
+          )}
         </View>
         <View style={styles.postContent__right}></View>
       </View>

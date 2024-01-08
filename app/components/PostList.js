@@ -92,6 +92,7 @@ export default function PostList() {
             user_name={user_name}
             location={location}
             due={due}
+            created_time={created_time}
             chat_number={chat_number}
             prev="PostHome"
           />

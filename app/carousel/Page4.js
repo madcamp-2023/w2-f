@@ -11,11 +11,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { useNavigation } from "@react-navigation/native";
+
 import Avatar from "../assets/avatar5.png";
 
 import KakaoLogin from "../components/KakaoLogin";
 import { userState } from "../recoil/recoil";
-import Routing from "../Routing";
 
 export default function Page4() {
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
@@ -24,28 +25,22 @@ export default function Page4() {
     setLoginModalVisible(false);
   };
 
-  const user = useRecoilValue(userState);
+  return (
+    <View style={styles.container}>
+      <Image source={Avatar} style={styles.image} />
 
-  if (!user) {
-    return (
-      <View style={styles.container}>
-        <Image source={Avatar} style={styles.image} />
+      <TouchableOpacity
+        style={styles.kakaobtn}
+        onPress={() => setLoginModalVisible(true)}
+      >
+        <Text style={styles.kakaoText}>Kakao Login</Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.kakaobtn}
-          onPress={() => setLoginModalVisible(true)}
-        >
-          <Text style={styles.kakaoText}>Kakao Login</Text>
-        </TouchableOpacity>
-
-        <Modal visible={isLoginModalVisible}>
-          <KakaoLogin onLoginSuccess={handleLoginSuccess} />
-        </Modal>
-      </View>
-    );
-  }
-
-  return <Routing />;
+      <Modal visible={isLoginModalVisible}>
+        <KakaoLogin onLoginSuccess={handleLoginSuccess} />
+      </Modal>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -14,11 +14,17 @@ import ChatStack from "./stacks/ChatStack";
 import ProfileStack from "./stacks/ProfileStack";
 import MainCover from "./carousel/MainCover";
 
+import Carousel from "./carousel/Carousel";
+
 const Tab = createBottomTabNavigator();
 
 export default function Routing() {
   //TODO : Loading
   const user = useRecoilValue(userState);
+
+  if (!user) {
+    return <Carousel />;
+  }
 
   return (
     <View style={styles.container}>
