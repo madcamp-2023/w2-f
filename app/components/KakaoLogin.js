@@ -18,6 +18,7 @@ export default function KakaoLogin({ onLoginSuccess }) {
     const match = regex.exec(url);
     if (match && match[1]) {
       const AUTHORIZE_CODE = match[1];
+
       onLoginSuccess(AUTHORIZE_CODE);
 
       axios
