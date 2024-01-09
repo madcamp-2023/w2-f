@@ -20,7 +20,7 @@ export default function PostList() {
       const response = await axios
         .get(URI + "/post")
         .then((response) => response.data);
-      console.log(response);
+      console.log(response.length);
       setData(response);
     }
   };
@@ -81,6 +81,8 @@ export default function PostList() {
           created_time,
           chat_number,
         } = item;
+
+        console.log("item", item);
         return (
           <PostItem
             id={id}

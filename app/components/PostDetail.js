@@ -128,7 +128,7 @@ export default function PostDetail({ route }) {
                   />
                   {dueTime.minutes > 0 && (
                     <Text style={isLessThanOneHour ? { color: "red" } : null}>
-                      마감까지{" "}
+                      마감{" "}
                     </Text>
                   )}
                   {dueTime.days > 0 && <Text>{dueTime.days}일 </Text>}
@@ -138,9 +138,12 @@ export default function PostDetail({ route }) {
                       {dueTime.minutes}분
                     </Text>
                   )}
+                  <Text style={isLessThanOneHour ? { color: "red" } : null}>
+                    전
+                  </Text>
                 </View>
                 <View>
-                  <Text style={{ marginLeft: 10, color: "blue" }}>
+                  <Text style={{ marginLeft: 10, color: "#5892FF" }}>
                     ₩ {price}
                   </Text>
                 </View>
@@ -154,7 +157,7 @@ export default function PostDetail({ route }) {
           <TouchableOpacity
             onPress={handleCreateChatRoom}
             style={{
-              backgroundColor: "#99CCFF",
+              backgroundColor: "#5892FF",
               height: 50,
               justifyContent: "center",
               alignItems: "center",

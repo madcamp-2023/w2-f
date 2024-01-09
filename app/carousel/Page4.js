@@ -59,16 +59,20 @@ const styles = StyleSheet.create({
 
   kakaobtn: {
     backgroundColor: "#FEE500",
-    width: 100,
-    height: 30,
+    // width: 100,
+    // height: 30,
+    padding: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
     marginTop: 50,
+    borderRadius: 10,
   },
 
   kakaoText: {
-    color: "white",
+    color: "#3B1C1C",
     fontWeight: "bold",
   },
 });

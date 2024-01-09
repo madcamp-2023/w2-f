@@ -35,7 +35,7 @@ const LocationItem = ({ location }) => {
   return (
     <View
       style={{
-        backgroundColor: "#99CCFF",
+        backgroundColor: "#5892FF",
         padding: 3,
         borderRadius: 20,
         marginRight: 10,
@@ -43,7 +43,7 @@ const LocationItem = ({ location }) => {
         alignItems: "center",
       }}
     >
-      <Text style={{ color: "white" }}> {location} </Text>
+      <Text style={{ color: "white", fontSize: 12 }}> {location} </Text>
     </View>
   );
 };

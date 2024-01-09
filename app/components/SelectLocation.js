@@ -13,13 +13,15 @@ import { URI } from "../recoil/constant";
 import { light_gray_color } from "../recoil/color";
 
 import { useNavigation } from "@react-navigation/native";
+import { useRecoilState } from "recoil";
+import { selectedLocationState } from "../recoil/recoil";
 
 const LocationModal = ({ locations, selectedLocation, onSelectLocation }) => {
   return (
     <View style={styles.locationsContainer}>
       {locations.map((location, index) => {
         const isSelected = location === selectedLocation;
-        const backgroundColor = isSelected ? "#99CCFF" : light_gray_color;
+        const backgroundColor = isSelected ? "#5892FF" : light_gray_color;
         const color = isSelected ? "white" : "black";
         return (
           <Pressable
@@ -64,7 +66,9 @@ export default function SelectLocation({ route, navigation }) {
   const [labelN, setLabelN] = useState([]);
   const [labelW, setLabelW] = useState([]);
 
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useRecoilState(
+    selectedLocationState
+  );
 
   useEffect(() => {
     const getLocations = async () => {
@@ -130,7 +134,7 @@ export default function SelectLocation({ route, navigation }) {
       <TouchableOpacity
         onPress={() => handleLocationSelect(selectedLocation)}
         style={{
-          backgroundColor: "#99CCFF",
+          backgroundColor: "#5892FF",
           justifyContent: "center",
           height: 50,
           alignItems: "center",

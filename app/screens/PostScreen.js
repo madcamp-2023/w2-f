@@ -86,7 +86,7 @@ export default function PostScreen() {
               name="pluscircleo"
               size={40}
               color="#fff"
-              style={{ backgroundColor: "#99CCFF", borderRadius: 40 }}
+              style={{ backgroundColor: "#5892FF", borderRadius: 40 }}
             />
           </TouchableOpacity>
         </View>

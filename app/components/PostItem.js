@@ -95,7 +95,7 @@ const PostItem = ({
           <MaterialIcons name="timer" size={20} style={{ marginRight: 5 }} />
           {dueTime.minutes > 0 && (
             <Text style={isLessThanOneHour ? { color: "red" } : null}>
-              마감까지{" "}
+              마감{" "}
             </Text>
           )}
           {dueTime.days > 0 && <Text>{dueTime.days}일 </Text>}
@@ -105,6 +105,7 @@ const PostItem = ({
               {dueTime.minutes}분
             </Text>
           )}
+          <Text style={isLessThanOneHour ? { color: "red" } : null}>전</Text>
         </View>
         <View style={styles.postContent__right}></View>
       </View>
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
 
   postPrice: {
     marginLeft: 10,
-    color: "blue",
+    color: "#5892FF",
   },
 
   postCotent__left: {

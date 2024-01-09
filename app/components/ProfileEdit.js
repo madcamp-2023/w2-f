@@ -166,7 +166,7 @@ const ProfileEdit = () => {
                   name="pluscircleo"
                   size={30}
                   color="#fff"
-                  style={{ backgroundColor: "#99CCFF", borderRadius: 30 }}
+                  style={{ backgroundColor: "#5892FF", borderRadius: 30 }}
                 />
               </TouchableOpacity>
             </View>
@@ -176,13 +176,13 @@ const ProfileEdit = () => {
       <TouchableOpacity
         onPress={handleSubmit}
         style={{
-          backgroundColor: "#99CCFF",
+          backgroundColor: "#5892FF",
           justifyContent: "center",
           height: 50,
           alignItems: "center",
         }}
       >
-        <Text>저장하기</Text>
+        <Text style={{ color: "white" }}>저장하기</Text>
       </TouchableOpacity>
     </View>
   );

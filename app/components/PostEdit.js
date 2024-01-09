@@ -28,16 +28,18 @@ import { URI } from "../recoil/constant";
 import DefaultImage from "../assets/defaultImage.png";
 import { blue_color, gray_color } from "../recoil/color";
 
-export default function PostCreate() {
+export default function PostEdit({ route }) {
+  const { id, title, price, body, location, due, image } = route.params;
+
   const navigation = useNavigation();
 
-  const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
-  const [price, setPrice] = useState(0);
-  const [body, setBody] = useState("");
-  const [image, setImage] = useState(null);
-  const [date, setDate] = useState(null);
-  const [time, setTime] = useState(null); // 날짜 상태
+  const [newTitle, setNewTitle] = useState("");
+  const [newLocation, setNewLocation] = useState("");
+  const [newPrice, setNewPrice] = useState(0);
+  const [newBody, setNewBody] = useState("");
+  const [newImage, setNewImage] = useState(image);
+  const [newDate, setNewDate] = useState(null);
+  const [newtime, setNewTime] = useState(null); // 날짜 상태
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const user = useRecoilValue(userState);
@@ -55,36 +57,40 @@ export default function PostCreate() {
 
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
-    console.log("date, time", date, time);
-    const due = combineDateTime(date, time);
+    const due = combineDateTime(newDate, newtime);
 
-    //TODO : 한 개라도 안적거나 선택안하면 경고창
     console.log(
-      image,
-      title,
-      body,
-      location,
-      price,
-      user.id,
-      user.name,
-      user.image,
+      "!!!!",
+      "id:",
+      id,
+      "image:",
+      newImage,
+      "title:",
+      newTitle,
+      "body:",
+      newBody,
+      "location:",
+      newLocation,
+      "price:",
+      newPrice,
+      "due:",
       due
     );
+
+    setPostRefresh((prev) => !prev);
+    navigation.goBack();
     await axios
-      .post(URI + "/post/create", {
-        image: image,
-        title: title,
-        body: body,
-        location: location,
-        price: price,
-        user_id: user.id,
-        user_name: user.name,
-        user_image: user.image,
+      .patch(URI + "/post", {
+        id: id,
+        image: newImage,
+        title: newTitle,
+        body: newBody,
+        location: newLocation,
+        price: newPrice,
         due: due,
       })
       .then(() => {
         setPostRefresh((prev) => !prev);
-        navigation.navigate("PostHome");
       });
   };
 
@@ -108,7 +114,7 @@ export default function PostCreate() {
     }
 
     const uri = result.assets[0].uri;
-    setImage(uri);
+    setNewImage(uri);
   };
 
   return (
@@ -117,7 +123,7 @@ export default function PostCreate() {
         <View style={styles.imageContainer}>
           <Pressable onPress={uploadImage}>
             <Image
-              source={image ? { uri: image } : DefaultImage}
+              source={image ? { uri: newImage } : DefaultImage}
               style={styles.image}
             />
           </Pressable>
@@ -128,48 +134,44 @@ export default function PostCreate() {
             <View style={{ padding: 20 }}>
               <Text style={{ marginBottom: 10 }}>제목</Text>
               <TextInput
-                onChangeText={setTitle}
-                value={title}
-                placeholder={"제목"}
+                onChangeText={setNewTitle}
+                value={newTitle}
+                placeholder={title}
                 style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
               />
             </View>
             <View style={{ padding: 20 }}>
               <Text style={{ marginBottom: 10 }}>가격</Text>
               <TextInput
-                onChangeText={setPrice}
-                value={String(price)}
-                placeholder={"₩ 가격을 입력해주세요."}
+                onChangeText={setNewPrice}
+                value={String(newPrice)}
+                placeholder={String(price)}
                 style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
               />
             </View>
             <View style={{ padding: 20 }}>
               <Text style={{ marginBottom: 10 }}>자세한 설명</Text>
               <TextInput
-                onChangeText={setBody}
-                value={body}
-                placeholder={"게시글 내용을 작성해주세요."}
+                onChangeText={setNewBody}
+                value={newBody}
+                placeholder={body}
                 style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
               />
             </View>
             <View style={{ padding: 20 }}>
               <Text style={{ marginBottom: 10 }}>거래 희망 장소</Text>
               <TextInput
-                onChangeText={setLocation}
-                value={location}
-                placeholder={"위치 추가"}
+                onChangeText={setNewLocation}
+                value={newLocation}
+                placeholder={location}
                 style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
               />
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                console.log("1");
-              }}
-              style={{ padding: 20 }}
-            >
-              <Text>마감 기한 선택 {">"}</Text>
-              <PostDatePicker handleDate={setDate} handleTime={setTime} />
-            </TouchableOpacity>
+            <View style={{ padding: 20, flexDirection: "row" }}>
+              <Text>마감 기한 선택</Text>
+            </View>
+            <PostDatePicker handleDate={setNewDate} handleTime={setNewTime} />
+
             <TouchableOpacity
               onPress={handleSubmit}
               style={{
@@ -180,7 +182,7 @@ export default function PostCreate() {
                 alignItems: "center",
               }}
             >
-              <Text>업로드하기</Text>
+              <Text style={{ color: "white" }}>수정하기</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>

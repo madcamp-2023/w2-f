@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, View } from "react-native";
+import { Button, Pressable, Text, View } from "react-native";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -27,9 +27,39 @@ export default function PostDatePicker({ handleDate, handleTime }) {
 
   return (
     <View>
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <Button onPress={() => showMode("date")} title="날짜 선택" />
-        <Button onPress={() => showMode("time")} title="시간 선택" />
+      <View
+        style={{
+          flexDirection: "row",
+          marginLeft: 20,
+          marginBottom: 20,
+          marginRight: 20,
+        }}
+      >
+        <Pressable onPress={() => showMode("date")}>
+          <Text
+            style={{
+              backgroundColor: "#5892FF",
+              borderRadius: 10,
+              padding: 5,
+              marginRight: 20,
+              color: "white",
+            }}
+          >
+            날짜 선택
+          </Text>
+        </Pressable>
+        <Pressable onPress={() => showMode("time")}>
+          <Text
+            style={{
+              backgroundColor: "#5892FF",
+              borderRadius: 10,
+              padding: 5,
+              color: "white",
+            }}
+          >
+            시간 선택
+          </Text>
+        </Pressable>
       </View>
       {show && (
         <DateTimePicker
