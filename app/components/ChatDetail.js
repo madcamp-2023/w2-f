@@ -44,11 +44,11 @@ export default function ChatDetail({ route }) {
       console.log("msgasdasdasd", message);
     });
 
-    // socket.emit("leave room", { room_id: id });
+    socket.emit("leave room", { room_id: id });
 
-    // return () => {
-    //   socket.disconnect();
-    // };
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (

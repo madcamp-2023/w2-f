@@ -15,7 +15,7 @@ export default function Carousel() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);

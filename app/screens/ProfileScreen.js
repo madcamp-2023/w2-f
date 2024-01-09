@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import {
   FlatList,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,19 +16,65 @@ import { useNavigation } from "@react-navigation/native";
 import { postRefreshState, userState } from "../recoil/recoil";
 import PostItem from "../components/PostItem";
 import { URI } from "../recoil/constant";
+import { blue_color, gray_color, light_gray_color } from "../recoil/color";
+
+const GrayItem = ({ children }) => {
+  return <Text style={{ color: gray_color, marginBottom: 3 }}>{children}</Text>;
+};
+
+const ContentItem = ({ children }) => {
+  const formattedText =
+    children.length > 10 ? `${children.substring(0, 10)}...` : children;
+
+  return (
+    <Text style={{ fontSize: 20, marginBottom: 10 }}>{formattedText}</Text>
+  );
+};
+
+const LocationItem = ({ location }) => {
+  return (
+    <View
+      style={{
+        backgroundColor: "#99CCFF",
+        padding: 3,
+        borderRadius: 20,
+        marginRight: 10,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text style={{ color: "white" }}> {location} </Text>
+    </View>
+  );
+};
+
+const EditItem = ({ children, onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Text
+        style={{
+          backgroundColor: light_gray_color,
+          padding: 3,
+          borderRadius: 20,
+          paddingLeft: 10,
+          paddingRight: 10,
+        }}
+      >
+        {children}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
-
-  const [data, setData] = useState(null);
-
   const user = useRecoilValue(userState);
+  const postRefrsh = useRecoilValue(postRefreshState);
+  const [data, setData] = useState(null);
 
   const handlePress = () => {
     navigation.navigate("ProfileEdit");
   };
-
-  const postRefrsh = useRecoilValue(postRefreshState);
 
   useEffect(() => {
     const getPostList = async (_) => {
@@ -48,26 +95,68 @@ export default function ProfileScreen() {
   }, [postRefrsh]);
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.profile} onPress={handlePress}>
+    <View style={{ flex: 1, marginTop: 50 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          marginLeft: 20,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Image
-          source={{
-            uri: user.image,
-          }}
-          style={styles.image}
+          source={{ uri: user.image }}
+          style={{ width: 120, height: 120, borderRadius: 100 }}
         />
-        <Text style={{ marginRight: 20 }}>{user.name}</Text>
-      </TouchableOpacity>
-      <View style={styles.post}>
-        <View style={styles.post__header}>
-          <Text style={styles.text}>내가 올린 글</Text>
-          {/* <Text style={styles.text}>내가 좋아하는 글</Text> */}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            marginLeft: 20,
+            marginRight: 20,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={{ flexDirection: "column" }}>
+              <GrayItem>이름</GrayItem>
+              <ContentItem>{user.name}</ContentItem>
+            </View>
+            <EditItem onPress={handlePress}>{"프로필 수정"}</EditItem>
+          </View>
+          <View>
+            <GrayItem>자기소개</GrayItem>
+            <ContentItem>{user.bio}</ContentItem>
+          </View>
+          <View>
+            <GrayItem>주요 위치</GrayItem>
+            {user.location && <LocationItem location={user.location} />}
+            {/* <ScrollView horizontal>
+                <LocationItem location={"location"} />;
+            </ScrollView> */}
+          </View>
         </View>
-        <View style={styles.post__main}>
+      </View>
+
+      <View style={{ flex: 1, marginTop: 20 }}>
+        <View
+          style={{
+            backgroundColor: light_gray_color,
+            borderColor: gray_color,
+            borderTopWidth: 1,
+            borderBottomWidth: 1,
+          }}
+        >
+          <Text style={{ padding: 10, marginLeft: 5 }}>내가 올린 글</Text>
+        </View>
+        <View style={{ flex: 1 }}>
           <FlatList
             data={data}
             keyExtractor={(item) => item.id.toString()}
-            style={styles.container}
             renderItem={({ item }) => {
               const {
                 id,
@@ -100,49 +189,3 @@ export default function ProfileScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-
-  profile: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    padding: 20,
-    marginTop: 20,
-  },
-
-  image: {
-    width: 30,
-    height: 30,
-    borderRadius: 100,
-    marginRight: 20,
-  },
-
-  post: {
-    flex: 1,
-    flexDirection: "column",
-  },
-
-  post__header: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
-  },
-
-  post__main: {
-    flex: 1,
-    flexDirection: "column",
-  },
-
-  text: {
-    padding: 5,
-    borderBottomWidth: 4,
-    borderBottomColor: "black",
-    paddingBottom: 5,
-    marginRight: 5,
-    marginLeft: 20,
-  },
-});

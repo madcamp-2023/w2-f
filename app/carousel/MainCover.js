@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: text_color,
+    color: "#16459E",
     fontSize: 40,
     marginBottom: 10,
   },
 
   content: {
-    color: text_color,
+    color: "#16459E",
     fontSize: contentSize,
     paddingBottom: 20,
   },

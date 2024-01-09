@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   Alert,
   Image,
@@ -8,6 +8,7 @@ import {
   Pressable,
   Text,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
@@ -105,7 +106,7 @@ const ProfileEdit = () => {
   };
 
   const handleSelectLocation = () => {
-    navigation.navigate("SelectLocation");
+    navigation.navigate("SelectLocation", { setLocation: setLocation });
   };
 
   return (
@@ -165,16 +166,24 @@ const ProfileEdit = () => {
                   name="pluscircleo"
                   size={30}
                   color="#fff"
-                  style={{ backgroundColor: "#16459E", borderRadius: 30 }}
+                  style={{ backgroundColor: "#99CCFF", borderRadius: 30 }}
                 />
               </TouchableOpacity>
             </View>
           </View>
         </View>
-        <Pressable onPress={handleSubmit} style={styles.submit}>
-          <Text style={{ color: "white", fontSize: 24 }}>저장하기</Text>
-        </Pressable>
       </View>
+      <TouchableOpacity
+        onPress={handleSubmit}
+        style={{
+          backgroundColor: "#99CCFF",
+          justifyContent: "center",
+          height: 50,
+          alignItems: "center",
+        }}
+      >
+        <Text>저장하기</Text>
+      </TouchableOpacity>
     </View>
   );
 };

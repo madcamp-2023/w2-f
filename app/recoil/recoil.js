@@ -19,3 +19,8 @@ export const postStatusState = atom({
   key: "postStatusState",
   default: "new",
 });
+
+export const selectedLocationState = atom({
+  key: "selectedLocationState",
+  default: null,
+});

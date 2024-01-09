@@ -1,6 +1,17 @@
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  FlatList,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import axios from "axios";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import * as ImagePicker from "expo-image-picker";
@@ -14,6 +25,9 @@ import PostDatePicker from "./PostDatePicker";
 import { postRefreshState, userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
 
+import DefaultImage from "../assets/defaultImage.png";
+import { blue_color, gray_color } from "../recoil/color";
+
 export default function PostCreate() {
   const navigation = useNavigation();
 
@@ -21,9 +35,7 @@ export default function PostCreate() {
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState(0);
   const [body, setBody] = useState("");
-  const [image, setImage] = useState(
-    "https://github.com/haejunejung/haejunejung.github.io/assets/99087502/d2817771-d076-4012-af8d-b2bd9330eea7"
-  );
+  const [image, setImage] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null); // 날짜 상태
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -85,58 +97,79 @@ export default function PostCreate() {
 
     const uri = result.assets[0].uri;
     setImage(uri);
-
-    console.log(uri);
   };
 
   return (
-    <View>
-      <View>
-        <AntDesign
-          name="arrowleft"
-          size={30}
-          onPress={() => navigation.navigate("PostHome")}
-        />
-      </View>
-      <View>
+    <View style={{ flex: 1, marginTop: 50 }}>
+      <View style={{ flex: 1 }}>
         <View style={styles.imageContainer}>
           <Pressable onPress={uploadImage}>
-            <Image source={{ uri: image }} style={styles.image} />
-            <FontAwesome
-              name="camera"
-              size={27}
-              style={styles.iconOverlay}
-              onPress={() => {}}
+            <Image
+              source={image ? { uri: image } : DefaultImage}
+              style={styles.image}
             />
           </Pressable>
         </View>
-        <View>
-          <LabelInput
-            label="제목"
-            value={title}
-            onChangeText={setTitle}
-            placeholder="제목을 입력하세요."
-          />
-          <LabelInput
-            label="위치"
-            value={location}
-            onChangeText={setLocation}
-            placeholder="위치를 입력하세요."
-          />
-          <LabelInput
-            label="가격"
-            value={price}
-            onChangeText={setPrice}
-            placeholder="가격을 입력하세요."
-          />
-          <PostDatePicker handleDate={setDate} handleTime={setTime} />
-          <LabelInput
-            label="내용"
-            value={body}
-            onChangeText={setBody}
-            placeholder="내용을 입력하세요."
-          />
-          <Button title="추가하기" onPress={handleSubmit} />
+
+        <View style={{ flex: 1 }}>
+          <ScrollView>
+            <View style={{ padding: 20 }}>
+              <Text style={{ marginBottom: 10 }}>제목</Text>
+              <TextInput
+                onChangeText={setTitle}
+                value={title}
+                placeholder={"제목"}
+                style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
+              />
+            </View>
+            <View style={{ padding: 20 }}>
+              <Text style={{ marginBottom: 10 }}>가격</Text>
+              <TextInput
+                onChangeText={setPrice}
+                value={String(price)}
+                placeholder={"₩ 가격을 입력해주세요."}
+                style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
+              />
+            </View>
+            <View style={{ padding: 20 }}>
+              <Text style={{ marginBottom: 10 }}>자세한 설명</Text>
+              <TextInput
+                onChangeText={setBody}
+                value={body}
+                placeholder={"게시글 내용을 작성해주세요."}
+                style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
+              />
+            </View>
+            <View style={{ padding: 20 }}>
+              <Text style={{ marginBottom: 10 }}>거래 희망 장소</Text>
+              <TextInput
+                onChangeText={setLocation}
+                value={location}
+                placeholder={"위치 추가"}
+                style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                console.log("1");
+              }}
+              style={{ padding: 20 }}
+            >
+              <Text>마감 기한 선택 {">"}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={{
+                flex: 1,
+                backgroundColor: "#99CCFF",
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>업로드하기</Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
       </View>
     </View>
@@ -150,9 +183,9 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    width: 150,
+    height: 150,
+    marginBottom: 30,
   },
 
   imageContainer: {

@@ -69,7 +69,13 @@ export default function PostScreen() {
           </View>
         </View>
 
-        <Image source={Banner} style={{ width: "100%", height: 100 }} />
+        <Image
+          source={Banner}
+          style={{
+            width: "100%",
+            height: 100,
+          }}
+        />
         <View style={styles.post__main}>
           {nav === "Feed" ? <PostList /> : <PostMap />}
           <TouchableOpacity
@@ -80,7 +86,7 @@ export default function PostScreen() {
               name="pluscircleo"
               size={40}
               color="#fff"
-              style={{ backgroundColor: "#16459E", borderRadius: 40 }}
+              style={{ backgroundColor: "#99CCFF", borderRadius: 40 }}
             />
           </TouchableOpacity>
         </View>
@@ -139,6 +145,8 @@ const styles = StyleSheet.create({
   post__main: {
     flex: 1,
     flexDirection: "column",
+    borderTopWidth: 1,
+    borderTopColor: "black",
   },
 
   selectedText: {

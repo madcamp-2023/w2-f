@@ -35,23 +35,7 @@ const MyPostDetail = ({ route }) => {
   const [time, setTime] = useState(""); // 날짜 상태
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
-  console.log(
-    "MyPostDetail",
-    id,
-    user_id,
-    title,
-    content,
-    price,
-    location,
-    due,
-    image,
-    prev,
-    chat_number
-  );
-
   const navigation = useNavigation();
-
-  const user = useRecoilValue(userState);
 
   const [postRefresh, setPostRefresh] = useRecoilState(postRefreshState);
 
@@ -82,8 +66,6 @@ const MyPostDetail = ({ route }) => {
 
     const uri = result.assets[0].uri;
     setnewImage(uri);
-
-    console.log(uri);
   };
 
   const handleUpdatePost = async () => {
