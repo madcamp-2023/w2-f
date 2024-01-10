@@ -17,8 +17,22 @@ import { URI } from "../recoil/constant";
 import { userState } from "../recoil/recoil";
 
 import { useNavigation } from "@react-navigation/native";
+import { smallestFontSize } from "../recoil/font";
 
 const screenWidth = Dimensions.get("window").width;
+
+const DueText = ({ children, isLessThanOneHour }) => {
+  return (
+    <Text
+      style={[
+        isLessThanOneHour ? { color: "red" } : null,
+        { fontSize: smallestFontSize },
+      ]}
+    >
+      {children}
+    </Text>
+  );
+};
 
 export default function PostDetail({ route }) {
   const {
@@ -107,15 +121,28 @@ export default function PostDetail({ route }) {
               style={{
                 flexDirection: "column",
                 padding: 20,
-                borderBottomWidth: 0.3,
-                borderBottomColor: "#474747",
+                borderBottomColor: "black",
+                borderBottomWidth: 1,
               }}
             >
-              <Text
-                style={{ fontWeight: "bold", fontSize: 24, marginBottom: 20 }}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                {title}
-              </Text>
+                <Text
+                  style={{ fontWeight: "bold", fontSize: 24, marginBottom: 20 }}
+                >
+                  {title}
+                </Text>
+                <View>
+                  <Text style={{ marginLeft: 10, color: "#5892FF" }}>
+                    ₩ {price}
+                  </Text>
+                </View>
+              </View>
 
               <View
                 style={{
@@ -134,25 +161,26 @@ export default function PostDetail({ route }) {
                     style={{ marginRight: 5 }}
                   />
                   {dueTime.minutes > 0 && (
-                    <Text style={isLessThanOneHour ? { color: "red" } : null}>
+                    <DueText isLessThanOneHour={isLessThanOneHour}>
                       마감{" "}
-                    </Text>
+                    </DueText>
                   )}
-                  {dueTime.days > 0 && <Text>{dueTime.days}일 </Text>}
-                  {dueTime.hours > 0 && <Text>{dueTime.hours}시간 </Text>}
+                  {dueTime.days > 0 && (
+                    <DueText isLessThanOneHour={isLessThanOneHour}>
+                      {dueTime.days}일{" "}
+                    </DueText>
+                  )}
+                  {dueTime.hours > 0 && (
+                    <DueText isLessThanOneHour={isLessThanOneHour}>
+                      {dueTime.hours}시간{" "}
+                    </DueText>
+                  )}
                   {dueTime.minutes > 0 && (
-                    <Text style={isLessThanOneHour ? { color: "red" } : null}>
+                    <DueText isLessThanOneHour={isLessThanOneHour}>
                       {dueTime.minutes}분
-                    </Text>
+                    </DueText>
                   )}
-                  <Text style={isLessThanOneHour ? { color: "red" } : null}>
-                    전
-                  </Text>
-                </View>
-                <View>
-                  <Text style={{ marginLeft: 10, color: "#5892FF" }}>
-                    ₩ {price}
-                  </Text>
+                  <DueText>전</DueText>
                 </View>
               </View>
             </View>

@@ -11,6 +11,7 @@ import {
   postStatusState,
   selectedLocationState,
 } from "../recoil/recoil";
+import LoadingScreen from "../screens/LoadingScreen";
 
 export default function PostList() {
   const [refreshing, setRefreshing] = useState(false);
@@ -21,12 +22,16 @@ export default function PostList() {
 
   const selectedLocation = useRecoilValue(selectedLocationState);
 
+  const [isLoading, setisLoading] = useState(true);
+
   const onRefresh = async () => {
+    setisLoading(true);
     if (!refreshing) {
       const response = await axios
         .get(URI + "/post")
         .then((response) => response.data);
       setData(response);
+      setisLoading(false);
     }
   };
 
@@ -39,6 +44,7 @@ export default function PostList() {
     };
 
     getPostList();
+    setisLoading(false);
   }, [postRefresh]);
 
   useEffect(() => {
@@ -71,6 +77,10 @@ export default function PostList() {
     }
     return item.label === selectedLocation;
   });
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <FlatList
