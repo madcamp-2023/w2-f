@@ -71,14 +71,15 @@ const ProfileEdit = () => {
       allowsEditing: false,
       quality: 1,
       aspect: [1, 1],
+      base64: true,
     });
 
     if (result.canceled) {
       return null;
     }
 
-    const uri = result.assets[0].uri;
-    setImageUrl(uri);
+    const base64Image = `data:image/jpeg;base64,${result.base64}`;
+    setImageUrl(base64Image);
   };
 
   const handleSubmit = async () => {
@@ -98,35 +99,12 @@ const ProfileEdit = () => {
         setUser({
           id: id,
           name: name,
-          image: image,
+          image: `data:image/jpeg;base64,${image}`,
           bio: bio,
           kakao_id: kakao_id,
           location: location,
         });
       });
-  };
-
-  const uploadToS3 = async (uri) => {
-    // Create a blob from the local file URI
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    // Set the new file name and type
-    const fileType = uri.substring(uri.lastIndexOf(".") + 1);
-    const fileName = `image-${Date.now()}.${fileType}`;
-
-    // Upload the file to S3
-    RNS3.put({ uri: uri, name: fileName, type: `image/${fileType}` }, s3config)
-      .progress((e) => console.log(e.loaded / e.total))
-      .then((response) => {
-        if (response.status !== 201) {
-          throw new Error("Failed to upload image to S3");
-        }
-        console.log("Uploaded to S3: ", response.body.postResponse.location);
-        // Here you can update your state or send the URL to your backend
-        setImageUrl(response.body.postResponse.location);
-      })
-      .catch((error) => console.error(error));
   };
 
   const handleSelectLocation = () => {

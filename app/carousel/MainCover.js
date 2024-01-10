@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { text_color } from "../recoil/color";
-import { contentSize } from "../recoil/font";
+import { contentFontSize } from "../recoil/font";
 
 export default function MainCover() {
   return (
@@ -30,21 +29,7 @@ const styles = StyleSheet.create({
 
   content: {
     color: "#16459E",
-    fontSize: contentSize,
+    fontSize: contentFontSize,
     paddingBottom: 20,
-  },
-
-  position: {
-    position: "absolute",
-    bottom: 10,
-    flexDirection: "row",
-    padding: 10,
-    fontSize: contentSize,
-  },
-
-  position__pt: {
-    marginLeft: 10,
-    marginRight: 10,
-    color: text_color,
   },
 });

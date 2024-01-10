@@ -18,7 +18,7 @@ import Avatar from "../assets/avatar5.png";
 import KakaoLogin from "../components/KakaoLogin";
 import { userState } from "../recoil/recoil";
 
-export default function Page4() {
+export default function Login() {
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
 
   const handleLoginSuccess = (code) => {

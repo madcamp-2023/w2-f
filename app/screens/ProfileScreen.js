@@ -1,34 +1,26 @@
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import {
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import axios from "axios";
 
 import { useNavigation } from "@react-navigation/native";
 
 import { postRefreshState, userState } from "../recoil/recoil";
-import PostItem from "../components/PostItem";
 import { URI } from "../recoil/constant";
-import { blue_color, gray_color, light_gray_color } from "../recoil/color";
+import { gray_color, light_gray_color } from "../recoil/color";
+import PostItem from "../components/PostItem";
+import { contentFontSize } from "../recoil/font";
 
 const GrayItem = ({ children }) => {
   return <Text style={{ color: gray_color, marginBottom: 3 }}>{children}</Text>;
 };
 
 const ContentItem = ({ children }) => {
-  const formattedText =
-    children.length > 10 ? `${children.substring(0, 10)}...` : children;
-
-  return (
-    <Text style={{ fontSize: 20, marginBottom: 10 }}>{formattedText}</Text>
-  );
+  // const formattedText =
+  //   children.length > 10 ? `${children.substring(0, 10)}...` : children;
+  // return (
+  //   <Text style={{ fontSize: 20, marginBottom: 10 }}>{formattedText}</Text>
+  // );
 };
 
 const LocationItem = ({ location }) => {
@@ -43,7 +35,10 @@ const LocationItem = ({ location }) => {
         alignItems: "center",
       }}
     >
-      <Text style={{ color: "white", fontSize: 12 }}> {location} </Text>
+      <Text style={{ color: "white", fontSize: contentFontSize }}>
+        {" "}
+        {location}{" "}
+      </Text>
     </View>
   );
 };
@@ -75,6 +70,8 @@ export default function ProfileScreen() {
   const handlePress = () => {
     navigation.navigate("ProfileEdit");
   };
+
+  console.log("user,", user);
 
   useEffect(() => {
     const getPostList = async (_) => {

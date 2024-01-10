@@ -5,7 +5,7 @@ import MainCover from "./MainCover";
 import Page1 from "./Page1";
 import Page2 from "./Page2";
 import Page3 from "./Page3";
-import Page4 from "./Page4";
+import Login from "./Login";
 
 const { width } = Dimensions.get("window"); // 화면 너비를 얻음
 
@@ -45,7 +45,7 @@ export default function Carousel() {
         <Page3 />
       </View>
       <View style={{ width, height: "100%" }}>
-        <Page4 />
+        <Login />
       </View>
     </ScrollView>
   );

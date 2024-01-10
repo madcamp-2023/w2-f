@@ -42,7 +42,17 @@ const Message = ({ log, isCurrentUser }) => {
 };
 
 export default function ChatDetail({ route }) {
-  const { id } = route.params;
+  const {
+    id,
+    last_chat,
+    user1_name,
+    user2_name,
+    user1_image,
+    user2_image,
+    user1_id,
+    user2_id,
+    created_at,
+  } = route.params;
   const user = useRecoilValue(userState);
   const [chatLogs, setChatLogs] = useState([]);
   const [text, setText] = useState("");
@@ -55,29 +65,36 @@ export default function ChatDetail({ route }) {
     })
   );
 
+  const otherImage = user1_id === user.id ? user2_image : user1_image;
+  const otherId = user1_id === user.id ? user2_id : user1_id;
+
   useEffect(() => {
     socket.connect();
-  }, []);
 
-  //   useEffect(() => {
-  //     const socket = io(URI, {
-  //       transports: ["websocket"],
-  //     });
+    const receiveChat = (msg) => {
+      const newMessage = {
+        user_id: otherId,
+        message: msg,
+        user_image: otherImage,
+      };
+      setChatLogs((prevLogs) => [...prevLogs, newMessage]);
+    };
 
-  //     socket.connect();
+    socket.on("receive chat", receiveChat);
 
-  //     socket.emit("join room", { room_id: id });
+    // Join the chat room
+    socket.emit("join room", { room_id: id });
 
-  //     socket.emit("send chat", { room_id: id, user_id: user.id, message: "111" });
-
-  //     socket.on("receive chat", () => {
-  //       console.log("msgasdasdasd", message);
-  //     });
-
-  //     return () => {
-  //       socket.disconnect();
-  //     };
-  //   }, []);
+    return () => {
+      socket.off("receive chat", receiveChat);
+      socket.emit("leave room", {
+        room_id: id,
+        user1_id: user1_id,
+        user2_id: user2_id,
+      });
+      socket.disconnect();
+    };
+  }, [socket, id]);
 
   const sendMessage = () => {
     const newMessage = {
@@ -98,6 +115,9 @@ export default function ChatDetail({ route }) {
       const response = await axios.get(`${URI}/chat`, {
         params: { room_id: id },
       });
+
+      console.log(response.data);
+
       setChatLogs(response.data);
     };
 
