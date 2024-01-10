@@ -20,6 +20,8 @@ export default function ChatList() {
 
         //TODO : user1,2 name,image 필요 -> back에서 수정되는 db를 가져오게끔 수정 필요
         setchatRoomList(response.data);
+
+        console.log("chatroom!", response.data);
       });
     };
 

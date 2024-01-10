@@ -40,31 +40,6 @@ export default function PostMap() {
           description: post.location,
         }));
 
-        const calculateTimeLeft = (due) => {
-          const dueDate = new Date(due);
-          const now = new Date();
-
-          const difference = dueDate - now;
-
-          // 일 시간, 분, 초 및 밀리초 단위로 변환
-          const daysLeft = Math.floor(difference / (1000 * 60 * 60 * 24));
-          const hoursLeft = Math.floor((difference / (1000 * 60 * 60)) % 24);
-          const minutesLeft = Math.floor((difference / (1000 * 60)) % 60);
-
-          return { days: daysLeft, hours: hoursLeft, minutes: minutesLeft };
-        };
-
-        const dueTime = calculateTimeLeft(due);
-        const isLessThanOneHour =
-          dueTime.days === 0 && dueTime.hours === 0 && dueTime.minutes > 0;
-
-        const truncatedContent =
-          content.length > 100 ? content.substring(0, 100) + "..." : content;
-
-        if (dueTime.days <= 0 && dueTime.hours <= 0 && dueTime.minutes <= 0) {
-          return;
-        }
-
         setMarkers(newMarkers);
       } catch (error) {
         console.error(error);
