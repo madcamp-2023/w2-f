@@ -114,7 +114,19 @@ const ProfileEdit = () => {
       <View style={styles.content}>
         <View style={styles.imageContainer}>
           <Pressable onPress={uploadImage}>
-            <Image source={{ uri: imageUrl }} style={styles.image} />
+            {/* <Image source={{ uri: imageUrl }} style={styles.image} /> */}
+            <Image
+              source={
+                imageUrl
+                  ? {
+                      uri: imageUrl.startsWith("data:image/jpeg;base64,")
+                        ? imageUrl
+                        : `data:image/jpeg;base64,${imageUrl}`,
+                    }
+                  : DefaultImage
+              }
+              style={styles.image}
+            />
             <FontAwesome
               name="camera"
               size={27}

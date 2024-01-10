@@ -105,7 +105,13 @@ const MyPostDetail = ({ route }) => {
         >
           <Image
             source={
-              image ? { uri: `data:image/jpeg;base64,${image}` } : DefaultImage
+              image
+                ? {
+                    uri: image.startsWith("data:image/jpeg;base64,")
+                      ? image
+                      : `data:image/jpeg;base64,${image}`,
+                  }
+                : DefaultImage
             }
             style={styles.image}
           />
@@ -192,7 +198,7 @@ const MyPostDetail = ({ route }) => {
                   title: title,
                   price: price,
                   body: content,
-                  location: location,
+                  loc: location,
                   due: due,
                   image: image,
                 })

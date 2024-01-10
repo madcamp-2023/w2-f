@@ -11,25 +11,45 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Dimensions,
 } from "react-native";
 import axios from "axios";
-import AntDesign from "react-native-vector-icons/AntDesign";
 import * as ImagePicker from "expo-image-picker";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-
+import AntDesgin from "react-native-vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 
-import LabelInput from "./LabelInput";
 import PostDatePicker from "./PostDatePicker";
 
 import { postRefreshState, userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
 
 import DefaultImage from "../assets/defaultImage.png";
-import { blue_color, gray_color } from "../recoil/color";
+import { gray_color } from "../recoil/color";
+
+const screenWidth = Dimensions.get("window").width;
+
+const LocationItem = ({ label }) => {
+  return (
+    <View
+      style={{
+        backgroundColor: "#ECECEC",
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 10,
+        borderRadius: 20,
+      }}
+    >
+      {label && (
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{ marginRight: 10 }}>{label}</Text>
+        </View>
+      )}
+    </View>
+  );
+};
 
 export default function PostEdit({ route }) {
-  const { id, title, price, body, location, due, image } = route.params;
+  const { id, title, price, body, loc, due, image } = route.params;
 
   const navigation = useNavigation();
 
@@ -37,11 +57,12 @@ export default function PostEdit({ route }) {
   const [newLocation, setNewLocation] = useState("");
   const [newPrice, setNewPrice] = useState(0);
   const [newBody, setNewBody] = useState("");
-  const [newImage, setNewImage] = useState(image);
+  const [newImageUrl, setNewImageUrl] = useState(image);
   const [newDate, setNewDate] = useState(null);
   const [newtime, setNewTime] = useState(null); // 날짜 상태
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
+  const [location, setLocation] = useState("");
   const user = useRecoilValue(userState);
 
   const [postRefresh, setPostRefresh] = useRecoilState(postRefreshState);
@@ -60,15 +81,15 @@ export default function PostEdit({ route }) {
     const due = combineDateTime(newDate, newtime);
 
     setPostRefresh((prev) => !prev);
-    navigation.goBack();
+    navigation.navigate("PostHome");
     await axios
       .patch(URI + "/post", {
         id: id,
-        image: newImage,
-        title: newTitle,
-        body: newBody,
-        location: newLocation,
-        price: newPrice,
+        image: newImageUrl,
+        title: newTitle === "" ? title : newTitle,
+        body: newBody === "" ? body : newBody,
+        location: newLocation === "" ? loc : location,
+        price: newPrice === 0 ? price : newPrice,
         due: due,
       })
       .then(() => {
@@ -89,24 +110,39 @@ export default function PostEdit({ route }) {
       allowsEditing: false,
       quality: 1,
       aspect: [1, 1],
+      base64: true,
     });
 
     if (result.canceled) {
       return null;
     }
 
-    const uri = result.assets[0].uri;
-    setNewImage(uri);
+    const base64Image = `data:image/jpeg;base64,${result.base64}`;
+    setNewImageUrl(base64Image);
+  };
+
+  const handleSelectLocation = () => {
+    navigation.navigate("SelectLocation", { setLocation: setLocation });
   };
 
   return (
     <View style={{ flex: 1, marginTop: 50 }}>
       <View style={{ flex: 1 }}>
         <View style={styles.imageContainer}>
-          <Image
-            source={image ? { uri: newImage } : DefaultImage}
-            style={styles.image}
-          />
+          <Pressable onPress={uploadImage}>
+            <Image
+              source={
+                newImageUrl
+                  ? {
+                      uri: newImageUrl.startsWith("data:image/jpeg;base64,")
+                        ? newImageUrl
+                        : `data:image/jpeg;base64,${newImageUrl}`,
+                    }
+                  : DefaultImage
+              }
+              style={styles.image}
+            />
+          </Pressable>
         </View>
 
         <View style={{ flex: 1 }}>
@@ -140,12 +176,38 @@ export default function PostEdit({ route }) {
             </View>
             <View style={{ padding: 20 }}>
               <Text style={{ marginBottom: 10 }}>거래 희망 장소</Text>
-              <TextInput
-                onChangeText={setNewLocation}
-                value={newLocation}
-                placeholder={location}
-                style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
-              />
+
+              <View
+                style={{
+                  flex: 1,
+                  borderBottomColor: "gray",
+                  borderBottomWidth: 1,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <LocationItem label={loc} />
+                  <TouchableOpacity
+                    onPress={handleSelectLocation}
+                    style={{
+                      backgroundColor: "#5892FF",
+                      borderRadius: 30,
+                    }}
+                  >
+                    <AntDesgin
+                      name="pluscircleo"
+                      size={25}
+                      color="#fff"
+                      style={{ backgroundColor: "#5892FF", borderRadius: 40 }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
             <View style={{ padding: 20, flexDirection: "row" }}>
               <Text>마감 기한 선택</Text>
@@ -178,9 +240,9 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 150,
-    height: 150,
-    marginBottom: 30,
+    width: screenWidth,
+    height: 200,
+    resizeMode: "cover",
   },
 
   imageContainer: {

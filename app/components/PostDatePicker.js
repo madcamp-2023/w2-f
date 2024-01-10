@@ -38,11 +38,10 @@ export default function PostDatePicker({ handleDate, handleTime }) {
         <Pressable onPress={() => showMode("date")}>
           <Text
             style={{
-              backgroundColor: "#5892FF",
               borderRadius: 10,
               padding: 5,
               marginRight: 20,
-              color: "white",
+              color: "#5892FF",
             }}
           >
             날짜 선택
@@ -51,10 +50,9 @@ export default function PostDatePicker({ handleDate, handleTime }) {
         <Pressable onPress={() => showMode("time")}>
           <Text
             style={{
-              backgroundColor: "#5892FF",
               borderRadius: 10,
               padding: 5,
-              color: "white",
+              color: "#5892FF",
             }}
           >
             시간 선택

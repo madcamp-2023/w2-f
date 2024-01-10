@@ -16,11 +16,11 @@ const GrayItem = ({ children }) => {
 };
 
 const ContentItem = ({ children }) => {
-  // const formattedText =
-  //   children.length > 10 ? `${children.substring(0, 10)}...` : children;
-  // return (
-  //   <Text style={{ fontSize: 20, marginBottom: 10 }}>{formattedText}</Text>
-  // );
+  const formattedText =
+    children.length > 10 ? `${children.substring(0, 10)}...` : children;
+  return (
+    <Text style={{ fontSize: 20, marginBottom: 10 }}>{formattedText}</Text>
+  );
 };
 
 const LocationItem = ({ location }) => {
@@ -89,6 +89,8 @@ export default function ProfileScreen() {
     getPostList();
   }, [postRefrsh]);
 
+  console.log("user!", user.name, user.bio, user.location);
+
   return (
     <View style={{ flex: 1, marginTop: 50 }}>
       <View
@@ -99,8 +101,21 @@ export default function ProfileScreen() {
           alignItems: "center",
         }}
       >
-        <Image
+        {/* <Image
           source={{ uri: user.image }}
+          style={{ width: 120, height: 120, borderRadius: 100 }}
+        /> */}
+
+        <Image
+          source={
+            user.image
+              ? {
+                  uri: user.image.startsWith("data:image/jpeg;base64,")
+                    ? user.image
+                    : `data:image/jpeg;base64,${user.image}`,
+                }
+              : DefaultImage
+          }
           style={{ width: 120, height: 120, borderRadius: 100 }}
         />
         <View
