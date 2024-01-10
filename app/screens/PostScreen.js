@@ -10,6 +10,7 @@ import Dropdown from "../components/Dropdown";
 import Banner from "../assets/banner.png";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedLocationState, userState } from "../recoil/recoil";
+import { gray_color } from "../recoil/color";
 
 export default function PostScreen() {
   const navigation = useNavigation();
@@ -112,6 +113,7 @@ export default function PostScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
 
   header: {
@@ -149,8 +151,8 @@ const styles = StyleSheet.create({
 
   post__header: {
     flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
+    borderBottomWidth: 0.3,
+    borderBottomColor: "#474747",
     zIndex: 1,
     paddingLeft: 15,
     justifyContent: "space-between",
@@ -159,8 +161,8 @@ const styles = StyleSheet.create({
   post__main: {
     flex: 1,
     flexDirection: "column",
-    borderTopWidth: 1,
-    borderTopColor: "black",
+    borderTopWidth: 0.3,
+    borderTopColor: "#474747",
   },
 
   selectedText: {

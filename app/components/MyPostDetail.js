@@ -86,8 +86,6 @@ const MyPostDetail = ({ route }) => {
     return;
   }
 
-  console.log("image?!", image);
-
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, flexDirection: "column" }}>
@@ -237,6 +235,7 @@ const MyPostDetail = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
 
   image: {

@@ -7,9 +7,12 @@ import ChatRoom from "./ChatRoom";
 import { URI } from "../recoil/constant";
 import { useRecoilValue } from "recoil";
 import { userState } from "../recoil/recoil";
+import LoadingScreen from "../screens/LoadingScreen";
 export default function ChatList() {
   const [chatRoomList, setchatRoomList] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const user = useRecoilValue(userState);
 
@@ -21,7 +24,7 @@ export default function ChatList() {
         //TODO : user1,2 name,image 필요 -> back에서 수정되는 db를 가져오게끔 수정 필요
         setchatRoomList(response.data);
 
-        console.log("chatroom!", response.data);
+        setIsLoading(false);
       });
     };
 
@@ -29,12 +32,20 @@ export default function ChatList() {
   }, []);
 
   const onRefresh = async () => {
+    setIsLoading(true);
     if (!refreshing) {
-      await axios.get(URI + "/chatRoom").then((response) => {
-        setchatRoomList(response.data);
-      });
+      await axios
+        .get(URI + "/chatRoom")
+        .then((response) => {
+          setchatRoomList(response.data);
+        })
+        .then(() => setIsLoading(false));
     }
   };
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <FlatList

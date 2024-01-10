@@ -19,8 +19,8 @@ export default function ChatRoom({
   const navigation = useNavigation();
   const user = useRecoilValue(userState);
 
-  const name = user.id === user1_id ? user2_name : user1_name;
-  const image = user.id === user1_id ? user2_image : user1_image;
+  const name = user.id === user1_id ? user1_name : user2_name;
+  const image = user.id === user1_id ? user1_image : user2_image;
 
   return (
     <TouchableOpacity
@@ -39,7 +39,14 @@ export default function ChatRoom({
       }}
       style={styles.chatItem}
     >
-      <Image source={{ uri: image }} style={styles.chatImage} />
+      <Image
+        source={{
+          uri: image.startsWith("data:image/jpeg;base64,")
+            ? image
+            : `data:image/jpeg;base64,${image}`,
+        }}
+        style={styles.chatImage}
+      />
       <View style={styles.chatDetails}>
         <Text style={styles.chatName}>{name}</Text>
         <Text style={styles.lastChat}>{last_chat}</Text>

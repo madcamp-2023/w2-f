@@ -16,7 +16,7 @@ import axios from "axios";
 import { URI } from "../recoil/constant";
 import { userState } from "../recoil/recoil";
 
-import DefaultImage from "../assets/defaultImage.png";
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -32,6 +32,7 @@ export default function PostDetail({ route }) {
     image,
     chat_number,
   } = route.params;
+  const navigation = useNavigation();
 
   const user = useRecoilValue(userState);
 
@@ -69,7 +70,7 @@ export default function PostDetail({ route }) {
         user2_id: user_id,
         post_id: id,
       })
-      .then((response) => console.log(response.data));
+      .then((response) => navigation.navigate("ChatHome"));
   };
 
   return (
@@ -81,14 +82,22 @@ export default function PostDetail({ route }) {
 
             alignItems: "center",
             justifyContent: "center",
-            borderBottomColor: "black",
-            borderBottomWidth: 1,
-            borderTopColor: "black",
-            borderTopWidth: 1,
+            borderBottomWidth: 0.3,
+            borderBottomColor: "#474747",
+            borderTopWidth: 0.3,
+            borderTopColor: "#474747",
           }}
         >
           <Image
-            source={image ? { uri: image } : DefaultImage}
+            source={
+              image
+                ? {
+                    uri: image.startsWith("data:image/jpeg;base64,")
+                      ? image
+                      : `data:image/jpeg;base64,${image}`,
+                  }
+                : DefaultImage
+            }
             style={styles.image}
           />
         </View>
@@ -98,8 +107,8 @@ export default function PostDetail({ route }) {
               style={{
                 flexDirection: "column",
                 padding: 20,
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
+                borderBottomWidth: 0.3,
+                borderBottomColor: "#474747",
               }}
             >
               <Text
@@ -172,6 +181,7 @@ export default function PostDetail({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
 
   image: {

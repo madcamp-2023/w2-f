@@ -10,6 +10,7 @@ import { URI } from "../recoil/constant";
 import { gray_color, light_gray_color } from "../recoil/color";
 import PostItem from "../components/PostItem";
 import { contentFontSize } from "../recoil/font";
+import LoadingScreen from "./LoadingScreen";
 
 const GrayItem = ({ children }) => {
   return <Text style={{ color: gray_color, marginBottom: 3 }}>{children}</Text>;
@@ -66,6 +67,7 @@ export default function ProfileScreen() {
   const user = useRecoilValue(userState);
   const postRefrsh = useRecoilValue(postRefreshState);
   const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handlePress = () => {
     navigation.navigate("ProfileEdit");
@@ -84,6 +86,7 @@ export default function ProfileScreen() {
       });
 
       setData(selectedResponse);
+      setIsLoading(false);
     };
 
     getPostList();
@@ -92,13 +95,14 @@ export default function ProfileScreen() {
   console.log("user!", user.name, user.bio, user.location);
 
   return (
-    <View style={{ flex: 1, marginTop: 50 }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <View
         style={{
           flexDirection: "row",
           marginLeft: 20,
           justifyContent: "center",
           alignItems: "center",
+          marginTop: 50,
         }}
       >
         {/* <Image
@@ -145,9 +149,6 @@ export default function ProfileScreen() {
           <View>
             <GrayItem>주요 위치</GrayItem>
             {user.location && <LocationItem location={user.location} />}
-            {/* <ScrollView horizontal>
-                <LocationItem location={"location"} />;
-            </ScrollView> */}
           </View>
         </View>
       </View>
@@ -156,44 +157,48 @@ export default function ProfileScreen() {
         <View
           style={{
             backgroundColor: light_gray_color,
-            borderColor: gray_color,
-            borderTopWidth: 1,
-            borderBottomWidth: 1,
+            borderBottomWidth: 0.3,
+            borderBottomColor: "#474747",
+            borderTopWidth: 0.3,
           }}
         >
           <Text style={{ padding: 10, marginLeft: 5 }}>내가 올린 글</Text>
         </View>
         <View style={{ flex: 1 }}>
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => {
-              const {
-                id,
-                user_id,
-                image,
-                body,
-                title,
-                content,
-                price,
-                location,
-                due,
-              } = item;
-              return (
-                <PostItem
-                  id={id}
-                  user_id={user_id}
-                  image={image}
-                  title={title}
-                  content={body}
-                  price={price}
-                  location={location}
-                  due={due}
-                  prev="ProfileHome"
-                />
-              );
-            }}
-          />
+          {isLoading ? (
+            <LoadingScreen />
+          ) : (
+            <FlatList
+              data={data}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => {
+                const {
+                  id,
+                  user_id,
+                  image,
+                  body,
+                  title,
+                  content,
+                  price,
+                  location,
+                  due,
+                } = item;
+                return (
+                  <PostItem
+                    id={id}
+                    user_id={user_id}
+                    image={image}
+                    title={title}
+                    content={body}
+                    price={price}
+                    location={location}
+                    due={due}
+                    prev="ProfileHome"
+                  />
+                );
+              }}
+            />
+          )}
         </View>
       </View>
     </View>

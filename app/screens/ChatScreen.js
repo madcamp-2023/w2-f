@@ -3,7 +3,7 @@ import ChatList from "../components/ChatList";
 
 export default function ChatScreen() {
   return (
-    <View>
+    <View style={{ backgroundColor: "white", flex: 1 }}>
       <ChatList />
     </View>
   );

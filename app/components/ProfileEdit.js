@@ -161,8 +161,8 @@ const ProfileEdit = () => {
           <View
             style={{
               flex: 1,
-              borderBottomColor: "gray",
-              borderBottomWidth: 1,
+              borderBottomWidth: 0.3,
+              borderBottomColor: "#474747",
             }}
           >
             <View
@@ -170,6 +170,7 @@ const ProfileEdit = () => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
+                marginBottom: 2,
               }}
             >
               <LocationItem label={location} />
@@ -209,6 +210,7 @@ const ProfileEdit = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
 
   header: {

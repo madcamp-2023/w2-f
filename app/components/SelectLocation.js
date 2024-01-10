@@ -15,6 +15,7 @@ import { light_gray_color } from "../recoil/color";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilState } from "recoil";
 import { selectedLocationState } from "../recoil/recoil";
+import LoadingScreen from "../screens/LoadingScreen";
 
 const LocationModal = ({ locations, selectedLocation, onSelectLocation }) => {
   return (
@@ -62,6 +63,8 @@ const SpecificLocation = ({
 export default function SelectLocation({ route, navigation }) {
   const { setLocation } = route.params;
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const [labelE, setLabelE] = useState([]);
   const [labelN, setLabelN] = useState([]);
   const [labelW, setLabelW] = useState([]);
@@ -91,6 +94,8 @@ export default function SelectLocation({ route, navigation }) {
         setLabelW(groupedData["W"] || []);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -117,8 +122,12 @@ export default function SelectLocation({ route, navigation }) {
     navigation.goBack(); // 이전 화면으로 돌아감
   };
 
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <FlatList
         data={specificLocations}
         keyExtractor={(item, index) => `specific-location-${index}`}

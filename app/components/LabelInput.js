@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    borderBottomColor: "gray",
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.3,
+    borderBottomColor: "#474747",
     padding: 5,
   },
 });

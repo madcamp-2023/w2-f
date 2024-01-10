@@ -6,6 +6,8 @@ import MyPostDetail from "../components/MyPostDetail";
 import PostDetail from "../components/PostDetail";
 import PostEdit from "../components/PostEdit";
 import SelectLocation from "../components/SelectLocation";
+import ChatScreen from "../screens/ChatScreen";
+import ChatDetail from "../components/ChatDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +25,8 @@ export default function PostStack() {
       <Stack.Screen name="PostDetail" component={PostDetail} />
       <Stack.Screen name="PostEdit" component={PostEdit} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} />
+      <Stack.Screen name="ChatHome" component={ChatScreen} />
+      <Stack.Screen name="ChatDetail" component={ChatDetail} />
     </Stack.Navigator>
   );
 }
