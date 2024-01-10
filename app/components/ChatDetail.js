@@ -16,7 +16,7 @@ import { userState } from "../recoil/recoil";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import io from "socket.io-client";
 
-const Message = ({ log, isCurrentUser }) => {
+const Message = ({ log, isCurrentUser, image }) => {
   return (
     <View
       style={[
@@ -25,7 +25,14 @@ const Message = ({ log, isCurrentUser }) => {
       ]}
     >
       {!isCurrentUser && (
-        <Image source={{ uri: log.user_image }} style={styles.avatar} />
+        <Image
+          source={{
+            uri: image.startsWith("data:image/jpeg;base64,")
+              ? image
+              : `data:image/jpeg;base64,${image}`,
+          }}
+          style={styles.avatar}
+        />
       )}
       <View
         style={[
@@ -138,6 +145,7 @@ export default function ChatDetail({ route }) {
             key={index}
             log={log}
             isCurrentUser={log.user_id === user.id}
+            image={user2_image}
           />
         ))}
       </ScrollView>
