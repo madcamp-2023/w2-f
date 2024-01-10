@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { WebView } from "react-native-webview";
 import axios from "axios";
 
-import { userState } from "../recoil/recoil";
+import { accessTokenState, userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
 
 const REST_API_KEY = "406d35070a2f8f7ca0e51a1e894ffdc6";
@@ -13,6 +13,8 @@ const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from
 export default function KakaoLogin({ onLoginSuccess }) {
   const [user, setUser] = useRecoilState(userState);
 
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+
   const getCode = (url) => {
     const regex = /[?&]code=(.*?)(?:&|$)/;
     const match = regex.exec(url);
@@ -20,6 +22,7 @@ export default function KakaoLogin({ onLoginSuccess }) {
       const AUTHORIZE_CODE = match[1];
 
       onLoginSuccess(AUTHORIZE_CODE);
+      setAccessToken(AUTHORIZE_CODE);
 
       axios
         .post(URI + "/user/login", {

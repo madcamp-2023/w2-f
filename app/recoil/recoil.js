@@ -24,3 +24,8 @@ export const selectedLocationState = atom({
   key: "selectedLocationState",
   default: "전체",
 });
+
+export const accessTokenState = atom({
+  key: "accessTokenState",
+  default: null,
+});

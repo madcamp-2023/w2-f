@@ -24,7 +24,6 @@ export default function Login() {
   const handleLoginSuccess = (code) => {
     setLoginModalVisible(false);
   };
-
   return (
     <View style={styles.container}>
       <Image source={Avatar} style={styles.image} />

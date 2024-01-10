@@ -1,11 +1,25 @@
 import { useRecoilValue } from "recoil";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import { useNavigation } from "@react-navigation/native";
 
 import { userState } from "../recoil/recoil";
+import { smallestFontSize } from "../recoil/font";
+
+const DueText = ({ children, isLessThanOneHour }) => {
+  return (
+    <Text
+      style={[
+        isLessThanOneHour ? { color: "red" } : null,
+        { fontSize: smallestFontSize },
+      ]}
+    >
+      {children}
+    </Text>
+  );
+};
 
 const PostItem = ({
   id,
@@ -42,7 +56,7 @@ const PostItem = ({
     dueTime.days === 0 && dueTime.hours === 0 && dueTime.minutes > 0;
 
   const truncatedContent =
-    content.length > 100 ? content.substring(0, 100) + "..." : content;
+    content.length > 100 ? content.substring(0, 90) + "..." : content;
 
   if (dueTime.days <= 0 && dueTime.hours <= 0 && dueTime.minutes <= 0) {
     return;
@@ -88,24 +102,30 @@ const PostItem = ({
         </View>
         <Text style={styles.postContent}>{truncatedContent}</Text>
         <View style={styles.postFooter}>
-          <View style={{ flexDirection: "row", width: 150 }}>
+          <View style={{ flexDirection: "row", width: 200 }}>
             <Entypo name="location-pin" size={20} />
-            <Text>{location}</Text>
+            <Text style={{ fontSize: smallestFontSize }}>{location}</Text>
           </View>
           <MaterialIcons name="timer" size={20} style={{ marginRight: 5 }} />
           {dueTime.minutes > 0 && (
-            <Text style={isLessThanOneHour ? { color: "red" } : null}>
-              마감{" "}
-            </Text>
+            <DueText isLessThanOneHour={isLessThanOneHour}>마감 </DueText>
           )}
-          {dueTime.days > 0 && <Text>{dueTime.days}일 </Text>}
-          {dueTime.hours > 0 && <Text>{dueTime.hours}시간 </Text>}
+          {dueTime.days > 0 && (
+            <DueText isLessThanOneHour={isLessThanOneHour}>
+              {dueTime.days}일{" "}
+            </DueText>
+          )}
+          {dueTime.hours > 0 && (
+            <DueText isLessThanOneHour={isLessThanOneHour}>
+              {dueTime.hours}시간{" "}
+            </DueText>
+          )}
           {dueTime.minutes > 0 && (
-            <Text style={isLessThanOneHour ? { color: "red" } : null}>
+            <DueText isLessThanOneHour={isLessThanOneHour}>
               {dueTime.minutes}분
-            </Text>
+            </DueText>
           )}
-          <Text style={isLessThanOneHour ? { color: "red" } : null}>전</Text>
+          <DueText>전</DueText>
         </View>
         <View style={styles.postContent__right}></View>
       </View>
@@ -155,6 +175,7 @@ const styles = StyleSheet.create({
   postPrice: {
     marginLeft: 10,
     color: "#5892FF",
+    fontSize: smallestFontSize,
   },
 
   postCotent__left: {
