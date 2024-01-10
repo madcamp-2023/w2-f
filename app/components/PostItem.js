@@ -88,7 +88,7 @@ const PostItem = ({
         </View>
         <Text style={styles.postContent}>{truncatedContent}</Text>
         <View style={styles.postFooter}>
-          <View style={{ flexDirection: "row", width: 80 }}>
+          <View style={{ flexDirection: "row", width: 150 }}>
             <Entypo name="location-pin" size={20} />
             <Text>{location}</Text>
           </View>

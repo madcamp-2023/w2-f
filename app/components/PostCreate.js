@@ -13,7 +13,10 @@ import {
   View,
 } from "react-native";
 import axios from "axios";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import AntDesgin from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
+import Feather from "react-native-vector-icons/Feather";
+
 import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -27,6 +30,27 @@ import { URI } from "../recoil/constant";
 
 import DefaultImage from "../assets/defaultImage.png";
 import { blue_color, gray_color } from "../recoil/color";
+
+const LocationItem = ({ label }) => {
+  return (
+    <View
+      style={{
+        backgroundColor: "#ECECEC",
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 10,
+        borderRadius: 20,
+      }}
+    >
+      {label && (
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{ marginRight: 10 }}>{label}</Text>
+          {/* <Feather name="x" size={15} color="gray" /> */}
+        </View>
+      )}
+    </View>
+  );
+};
 
 export default function PostCreate() {
   const navigation = useNavigation();
@@ -111,6 +135,10 @@ export default function PostCreate() {
     setImage(uri);
   };
 
+  const handleSelectLocation = () => {
+    navigation.navigate("SelectLocation", { setLocation: setLocation });
+  };
+
   return (
     <View style={{ flex: 1, marginTop: 50 }}>
       <View style={{ flex: 1 }}>
@@ -154,22 +182,43 @@ export default function PostCreate() {
             </View>
             <View style={{ padding: 20 }}>
               <Text style={{ marginBottom: 10 }}>거래 희망 장소</Text>
-              <TextInput
-                onChangeText={setLocation}
-                value={location}
-                placeholder={"위치 추가"}
-                style={{ borderColor: gray_color, borderWidth: 1, padding: 10 }}
-              />
+
+              <View
+                style={{
+                  flex: 1,
+                  borderBottomColor: "gray",
+                  borderBottomWidth: 1,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <LocationItem label={location} />
+                  <TouchableOpacity
+                    onPress={handleSelectLocation}
+                    style={{
+                      backgroundColor: "#5892FF",
+                      borderRadius: 30,
+                      padding: 5,
+                    }}
+                  >
+                    {location ? (
+                      <Feather name="edit" size={25} color="#fff" />
+                    ) : (
+                      <AntDesgin name="pluscircleo" size={25} color="#fff" />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                console.log("1");
-              }}
-              style={{ padding: 20 }}
-            >
-              <Text>마감 기한 선택 {">"}</Text>
-              <PostDatePicker handleDate={setDate} handleTime={setTime} />
-            </TouchableOpacity>
+            <View style={{ padding: 20, flexDirection: "row" }}>
+              <Text>마감 기한 선택</Text>
+            </View>
+            <PostDatePicker handleDate={setDate} handleTime={setTime} />
             <TouchableOpacity
               onPress={handleSubmit}
               style={{
@@ -180,7 +229,7 @@ export default function PostCreate() {
                 alignItems: "center",
               }}
             >
-              <Text>업로드하기</Text>
+              <Text style={{ color: "white" }}>업로드하기</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>

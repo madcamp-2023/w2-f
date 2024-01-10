@@ -15,6 +15,7 @@ import axios from "axios";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesgin from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
 import Feather from "react-native-vector-icons/Feather";
 
 import { useNavigation } from "@react-navigation/native";
@@ -36,7 +37,7 @@ const LocationItem = ({ label }) => {
       }}
     >
       <Text style={{ marginRight: 10 }}>{label}</Text>
-      <Feather name="x" size={15} color="gray" />
+      {/* <Feather name="x" size={15} color="gray" /> */}
     </View>
   );
 };
@@ -105,6 +106,29 @@ const ProfileEdit = () => {
       });
   };
 
+  const uploadToS3 = async (uri) => {
+    // Create a blob from the local file URI
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    // Set the new file name and type
+    const fileType = uri.substring(uri.lastIndexOf(".") + 1);
+    const fileName = `image-${Date.now()}.${fileType}`;
+
+    // Upload the file to S3
+    RNS3.put({ uri: uri, name: fileName, type: `image/${fileType}` }, s3config)
+      .progress((e) => console.log(e.loaded / e.total))
+      .then((response) => {
+        if (response.status !== 201) {
+          throw new Error("Failed to upload image to S3");
+        }
+        console.log("Uploaded to S3: ", response.body.postResponse.location);
+        // Here you can update your state or send the URL to your backend
+        setImageUrl(response.body.postResponse.location);
+      })
+      .catch((error) => console.error(error));
+  };
+
   const handleSelectLocation = () => {
     navigation.navigate("SelectLocation", { setLocation: setLocation });
   };
@@ -161,13 +185,19 @@ const ProfileEdit = () => {
               }}
             >
               <LocationItem label={location} />
-              <TouchableOpacity onPress={handleSelectLocation}>
-                <AntDesgin
-                  name="pluscircleo"
-                  size={30}
-                  color="#fff"
-                  style={{ backgroundColor: "#5892FF", borderRadius: 30 }}
-                />
+              <TouchableOpacity
+                onPress={handleSelectLocation}
+                style={{
+                  backgroundColor: "#5892FF",
+                  borderRadius: 30,
+                  padding: 5,
+                }}
+              >
+                {location ? (
+                  <Feather name="edit" size={25} color="#fff" />
+                ) : (
+                  <AntDesgin name="pluscircleo" size={25} color="#fff" />
+                )}
               </TouchableOpacity>
             </View>
           </View>

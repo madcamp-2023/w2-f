@@ -35,6 +35,7 @@
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.72.6",
+    "react-native-aws3": "^0.0.9",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-kakao-logins": "^1.4.0",

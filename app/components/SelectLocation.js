@@ -66,9 +66,11 @@ export default function SelectLocation({ route, navigation }) {
   const [labelN, setLabelN] = useState([]);
   const [labelW, setLabelW] = useState([]);
 
-  const [selectedLocation, setSelectedLocation] = useRecoilState(
-    selectedLocationState
-  );
+  // const [selectedLocation, setSelectedLocation] = useState(
+  //   selectedLocationState
+  // );
+
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   useEffect(() => {
     const getLocations = async () => {
@@ -98,15 +100,15 @@ export default function SelectLocation({ route, navigation }) {
   const specificLocations = [
     {
       title: "KAIST 동측 (E)",
-      locations: labelE.map((item) => `${item.name} ${item.location}`),
+      locations: labelE.map((item) => `${item.name}(${item.location})`),
     },
     {
       title: "KAIST 북측 (N)",
-      locations: labelN.map((item) => `${item.name} ${item.location}`),
+      locations: labelN.map((item) => `${item.name}(${item.location})`),
     },
     {
       title: "KAIST 서측 (W)",
-      locations: labelW.map((item) => `${item.name} ${item.location}`),
+      locations: labelW.map((item) => `${item.name}(${item.location})`),
     },
   ];
 
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
   },
 
   locationText: {
-    fontSize: 12,
+    fontSize: 10,
     backgroundColor: light_gray_color,
     padding: 5,
     paddingLeft: 10,

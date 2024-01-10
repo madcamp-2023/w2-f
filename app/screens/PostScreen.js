@@ -10,14 +10,14 @@ import {
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import AntDesgin from "react-native-vector-icons/AntDesign";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 import PostList from "../components/PostList";
 import PostMap from "../components/PostMap";
 import Dropdown from "../components/Dropdown";
 import Banner from "../assets/banner.png";
-import { useRecoilValue } from "recoil";
-import { userState } from "../recoil/recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { selectedLocationState, userState } from "../recoil/recoil";
 
 export default function PostScreen() {
   const navigation = useNavigation();
@@ -25,15 +25,25 @@ export default function PostScreen() {
 
   const user = useRecoilValue(userState);
 
+  const [selectedLocation, setSelectedLocation] = useRecoilState(
+    selectedLocationState
+  );
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const locations = ["전체", "N", "S", "W"]; // 예시 위치들
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.header__location}>
-          <TouchableOpacity
-            onPress={() => {
-              console.log("TODO");
-            }}
-          >
+          <TouchableOpacity onPress={() => setShowDropdown(!showDropdown)}>
+            <View style={styles.locationRow}>
+              <Text style={{ fontSize: 24, marginRight: 10 }}>
+                {selectedLocation}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          {showDropdown && (
             <View
               style={{
                 flexDirection: "row",
@@ -41,10 +51,22 @@ export default function PostScreen() {
                 alignItems: "center",
               }}
             >
-              <Text style={{ fontSize: 20, marginRight: 10 }}>N1</Text>
-              <AntDesgin name="down" size={20} />
+              {locations.map((location, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.dropdownItem}
+                  onPress={() => {
+                    setSelectedLocation(location);
+                    setShowDropdown(false);
+                  }}
+                >
+                  <Text style={{ marginLeft: 5, marginRight: 5 }}>
+                    {location}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
-          </TouchableOpacity>
+          )}
         </View>
       </View>
       <View style={styles.post}>
@@ -82,7 +104,7 @@ export default function PostScreen() {
             style={styles.createPost}
             onPress={() => navigation.navigate("PostCreate")}
           >
-            <AntDesgin
+            <AntDesign
               name="pluscircleo"
               size={40}
               color="#fff"

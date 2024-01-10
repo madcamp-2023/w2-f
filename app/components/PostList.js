@@ -6,7 +6,11 @@ import PostItem from "./PostItem";
 
 import { URI } from "../recoil/constant";
 import { useRecoilValue } from "recoil";
-import { postRefreshState, postStatusState } from "../recoil/recoil";
+import {
+  postRefreshState,
+  postStatusState,
+  selectedLocationState,
+} from "../recoil/recoil";
 
 export default function PostList() {
   const [refreshing, setRefreshing] = useState(false);
@@ -15,12 +19,13 @@ export default function PostList() {
   const postRefresh = useRecoilValue(postRefreshState);
   const postStatus = useRecoilValue(postStatusState);
 
+  const selectedLocation = useRecoilValue(selectedLocationState);
+
   const onRefresh = async () => {
     if (!refreshing) {
       const response = await axios
         .get(URI + "/post")
         .then((response) => response.data);
-      console.log(response.length);
       setData(response);
     }
   };
@@ -60,9 +65,16 @@ export default function PostList() {
     }
   }, [postStatus]);
 
+  const filteredData = data?.filter((item) => {
+    if (selectedLocation === "전체") {
+      return true;
+    }
+    return item.label === selectedLocation;
+  });
+
   return (
     <FlatList
-      data={data}
+      data={filteredData}
       keyExtractor={(item) => item.id.toString()}
       style={styles.container}
       onRefresh={onRefresh}
@@ -82,7 +94,6 @@ export default function PostList() {
           chat_number,
         } = item;
 
-        console.log("item", item);
         return (
           <PostItem
             id={id}

@@ -8,11 +8,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { userState } from "./recoil/recoil";
-import LoginScreen from "./screens/LoginScreen";
 import PostStack from "./stacks/PostStack";
 import ChatStack from "./stacks/ChatStack";
 import ProfileStack from "./stacks/ProfileStack";
-import MainCover from "./carousel/MainCover";
 
 import Carousel from "./carousel/Carousel";
 

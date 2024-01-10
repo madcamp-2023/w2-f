@@ -5,6 +5,7 @@ import PostCreate from "../components/PostCreate";
 import MyPostDetail from "../components/MyPostDetail";
 import PostDetail from "../components/PostDetail";
 import PostEdit from "../components/PostEdit";
+import SelectLocation from "../components/SelectLocation";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ export default function PostStack() {
       <Stack.Screen name="MyPostDetail" component={MyPostDetail} />
       <Stack.Screen name="PostDetail" component={PostDetail} />
       <Stack.Screen name="PostEdit" component={PostEdit} />
+      <Stack.Screen name="SelectLocation" component={SelectLocation} />
     </Stack.Navigator>
   );
 }

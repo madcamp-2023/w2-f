@@ -121,12 +121,10 @@ export default function PostEdit({ route }) {
     <View style={{ flex: 1, marginTop: 50 }}>
       <View style={{ flex: 1 }}>
         <View style={styles.imageContainer}>
-          <Pressable onPress={uploadImage}>
-            <Image
-              source={image ? { uri: newImage } : DefaultImage}
-              style={styles.image}
-            />
-          </Pressable>
+          <Image
+            source={image ? { uri: newImage } : DefaultImage}
+            style={styles.image}
+          />
         </View>
 
         <View style={{ flex: 1 }}>

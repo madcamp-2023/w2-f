@@ -163,7 +163,7 @@ export default function PostDetail({ route }) {
               alignItems: "center",
             }}
           >
-            <Text>채팅하기</Text>
+            <Text style={{ color: "white" }}>채팅하기</Text>
           </TouchableOpacity>
         </View>
       </View>

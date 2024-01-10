@@ -22,5 +22,5 @@ export const postStatusState = atom({
 
 export const selectedLocationState = atom({
   key: "selectedLocationState",
-  default: null,
+  default: "전체",
 });

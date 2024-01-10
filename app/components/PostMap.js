@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import { URI } from "../recoil/constant";
+import { postRefreshState } from "../recoil/recoil";
+import { useRecoilValue } from "recoil";
+import axios from "axios";
 
 export default function PostMap() {
+  const [markers, setMarkers] = useState([]);
   const locations = [
     {
       latitude: 37.78825,
@@ -18,6 +23,32 @@ export default function PostMap() {
     },
   ];
 
+  const [data, setData] = useState(null);
+
+  const postRefresh = useRecoilValue(postRefreshState);
+
+  useEffect(() => {
+    const getPostList = async () => {
+      try {
+        const response = await axios.get(URI + "/post");
+        const posts = response.data;
+
+        const newMarkers = posts.map((post) => ({
+          latitude: parseFloat(post.latitude),
+          longitude: parseFloat(post.longitude),
+          title: post.title,
+          description: post.location,
+        }));
+
+        setMarkers(newMarkers);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getPostList();
+  }, [postRefresh]);
+
   return (
     <View style={styles.container}>
       <MapView
@@ -25,27 +56,24 @@ export default function PostMap() {
         initialRegion={{
           latitude: 36.3711,
           longitude: 127.3622,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.015,
         }}
       >
-        {locations.map((location, index) => (
+        {markers.map((marker, index) => (
           <Marker
             key={index}
             coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
+              latitude: marker.latitude,
+              longitude: marker.longitude,
             }}
-            title={location.title}
-            description={location.description}
-            onPress={() =>
-              Alert.alert("Marker Pressed", "You have pressed the marker.")
-            }
+            title={marker.title}
+            description={marker.description}
           />
         ))}
       </MapView>
-      <Text style={styles.text}>This is some text below the map</Text>
-      <Button title="Press Me" onPress={() => console.log("Button Pressed")} />
+      {/* <Text style={styles.text}>This is some text below the map</Text> */}
+      {/* <Button title="Press Me" onPress={() => console.log("Button Pressed")} /> */}
     </View>
   );
 }
