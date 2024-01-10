@@ -67,7 +67,6 @@ const PostItem = ({
       style={styles.postContainer}
       onPress={() => {
         if (user && user.id === user_id) {
-          console.log("image", image);
           navigation.navigate("MyPostDetail", {
             id,
             user_id,

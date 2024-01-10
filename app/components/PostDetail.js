@@ -33,8 +33,6 @@ export default function PostDetail({ route }) {
     chat_number,
   } = route.params;
 
-  console.log("image", image);
-
   const user = useRecoilValue(userState);
 
   const calculateTimeLeft = (due) => {

@@ -54,7 +54,7 @@ export default function PostCreate() {
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState(0);
   const [body, setBody] = useState("");
-  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null); // 날짜 상태
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -84,7 +84,7 @@ export default function PostCreate() {
     }
 
     const base64Image = `data:image/jpeg;base64,${result.base64}`;
-    setImage(base64Image);
+    setImageUrl(base64Image);
   };
 
   const handleSelectLocation = () => {
@@ -106,7 +106,7 @@ export default function PostCreate() {
 
     await axios
       .post(URI + "/post/create", {
-        image: image,
+        image: imageUrl,
         title: title,
         body: body,
         location: location,
@@ -128,7 +128,7 @@ export default function PostCreate() {
         <View style={styles.imageContainer}>
           <Pressable onPress={uploadImage}>
             <Image
-              source={image ? { uri: image } : DefaultImage}
+              source={imageUrl ? { uri: imageUrl } : DefaultImage}
               style={styles.image}
             />
           </Pressable>

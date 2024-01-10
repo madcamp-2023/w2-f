@@ -8,17 +8,18 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { postRefreshState } from "../recoil/recoil";
+import { postRefreshState, userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
 import { smallestFontSize } from "../recoil/font";
+
+import DefaultImage from "../assets/defaultImage.png";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -48,15 +49,6 @@ const MyPostDetail = ({ route }) => {
     prev,
     chat_number,
   } = route.params;
-
-  const [newTitle, setNewTitle] = useState("");
-  const [newContent, setNewContent] = useState("");
-  const [newPrice, setNewPrice] = useState("");
-  const [newLocation, setNewLocation] = useState("");
-  const [newImage, setnewImage] = useState(image);
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState(""); // 날짜 상태
-  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const navigation = useNavigation();
 
@@ -94,6 +86,8 @@ const MyPostDetail = ({ route }) => {
     return;
   }
 
+  console.log("image?!", image);
+
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, flexDirection: "column" }}>
@@ -109,7 +103,12 @@ const MyPostDetail = ({ route }) => {
             borderTopWidth: 1,
           }}
         >
-          <Image source={{ uri: image }} style={styles.image} />
+          <Image
+            source={
+              image ? { uri: `data:image/jpeg;base64,${image}` } : DefaultImage
+            }
+            style={styles.image}
+          />
         </View>
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>

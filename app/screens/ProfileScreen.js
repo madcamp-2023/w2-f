@@ -71,8 +71,6 @@ export default function ProfileScreen() {
     navigation.navigate("ProfileEdit");
   };
 
-  console.log("user,", user);
-
   useEffect(() => {
     const getPostList = async (_) => {
       const response = await axios
