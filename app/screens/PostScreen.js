@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Image,
@@ -30,7 +30,7 @@ export default function PostScreen() {
   );
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const locations = ["전체", "N", "S", "W"]; // 예시 위치들
+  const locations = ["전체", "E", "N", "W"];
 
   return (
     <View style={styles.container}>

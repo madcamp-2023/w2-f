@@ -52,7 +52,7 @@ export default function ChatRoom({
 const styles = StyleSheet.create({
   chatItem: {
     flexDirection: "row",
-    padding: 10,
+    padding: 20,
     alignItems: "center",
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 10,
+    marginRight: 20,
     backgroundColor: "#cccccc", // Placeholder color
   },
   chatDetails: {
