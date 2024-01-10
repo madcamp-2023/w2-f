@@ -19,8 +19,8 @@ export default function ChatRoom({
   const navigation = useNavigation();
   const user = useRecoilValue(userState);
 
-  const name = user.id === user1_id ? user1_name : user2_name;
-  const image = user.id === user1_id ? user1_image : user2_image;
+  const name = user.id === user1_id ? user2_name : user1_name;
+  const image = user.id === user1_id ? user2_image : user1_image;
 
   return (
     <TouchableOpacity

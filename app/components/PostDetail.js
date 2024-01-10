@@ -80,8 +80,8 @@ export default function PostDetail({ route }) {
     //TODO : TEST
     await axios
       .post(URI + "/chatRoom", {
-        user1_id: user.id,
-        user2_id: user_id,
+        user1_id: user_id,
+        user2_id: user.id,
         post_id: id,
       })
       .then((response) => navigation.navigate("ChatHome"));
