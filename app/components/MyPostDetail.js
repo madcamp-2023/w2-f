@@ -1,5 +1,5 @@
+import { useState } from "react";
 import {
-  Button,
   Image,
   Pressable,
   StyleSheet,
@@ -8,22 +8,32 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 
-import { postRefreshState, userState } from "../recoil/recoil";
+import { useNavigation } from "@react-navigation/native";
+
+import { postRefreshState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
-import { useState } from "react";
-import LabelInput from "./LabelInput";
-import PostDatePicker from "./PostDatePicker";
-import { gray_color } from "../recoil/color";
+import { smallestFontSize } from "../recoil/font";
 
 const screenWidth = Dimensions.get("window").width;
+
+const DueText = ({ children, isLessThanOneHour }) => {
+  return (
+    <Text
+      style={[
+        isLessThanOneHour ? { color: "red" } : null,
+        { fontSize: smallestFontSize },
+      ]}
+    >
+      {children}
+    </Text>
+  );
+};
 
 const MyPostDetail = ({ route }) => {
   const {
@@ -38,8 +48,6 @@ const MyPostDetail = ({ route }) => {
     prev,
     chat_number,
   } = route.params;
-
-  console.log("id!!!", id);
 
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
@@ -56,62 +64,8 @@ const MyPostDetail = ({ route }) => {
 
   const handleDeletePost = async () => {
     setPostRefresh((prev) => !prev);
-    navigation.navigate(prev);
+    navigation.goBack();
     await axios.delete(URI + "/post?id=" + id);
-  };
-
-  const uploadImage = async () => {
-    if (!status?.granted) {
-      const permission = await requestPermission();
-      if (!permission.granted) {
-        return null;
-      }
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      quality: 1,
-      aspect: [1, 1],
-    });
-
-    if (result.canceled) {
-      return null;
-    }
-
-    const uri = result.assets[0].uri;
-    setnewImage(uri);
-  };
-
-  const handleUpdatePost = async () => {
-    function combineDateTime(date, time) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const hours = String(time.getHours()).padStart(2, "0");
-      const minutes = String(time.getMinutes()).padStart(2, "0");
-      const seconds = String(time.getSeconds()).padStart(2, "0");
-
-      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    }
-    const due = combineDateTime(date, time);
-
-    setPostRefresh((prev) => !prev);
-    navigation.navigate(prev);
-    await axios
-      .patch(URI + "/post", {
-        id: id,
-        image: newImage,
-        title: newTitle,
-        body: newContent,
-        location: newLocation,
-        price: newPrice,
-        due: due,
-      })
-      .then(() => {
-        setPostRefresh((prev) => !prev);
-        navigation.navigate(prev);
-      });
   };
 
   const calculateTimeLeft = (due) => {
@@ -134,7 +88,7 @@ const MyPostDetail = ({ route }) => {
     dueTime.days === 0 && dueTime.hours === 0 && dueTime.minutes > 0;
 
   const truncatedContent =
-    content.length > 100 ? content.substring(0, 100) + "..." : content;
+    content.length > 100 ? content.substring(0, 90) + "..." : content;
 
   if (dueTime.days <= 0 && dueTime.hours <= 0 && dueTime.minutes <= 0) {
     return;
@@ -155,9 +109,7 @@ const MyPostDetail = ({ route }) => {
             borderTopWidth: 1,
           }}
         >
-          <Pressable onPress={uploadImage}>
-            <Image source={{ uri: newImage }} style={styles.image} />
-          </Pressable>
+          <Image source={{ uri: image }} style={styles.image} />
         </View>
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
@@ -169,11 +121,24 @@ const MyPostDetail = ({ route }) => {
                 borderBottomWidth: 1,
               }}
             >
-              <Text
-                style={{ fontWeight: "bold", fontSize: 24, marginBottom: 20 }}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                {title}
-              </Text>
+                <Text
+                  style={{ fontWeight: "bold", fontSize: 24, marginBottom: 20 }}
+                >
+                  {title}
+                </Text>
+                <View>
+                  <Text style={{ marginLeft: 10, color: "#5892FF" }}>
+                    ₩ {price}
+                  </Text>
+                </View>
+              </View>
 
               <View
                 style={{
@@ -192,31 +157,32 @@ const MyPostDetail = ({ route }) => {
                     style={{ marginRight: 5 }}
                   />
                   {dueTime.minutes > 0 && (
-                    <Text style={isLessThanOneHour ? { color: "red" } : null}>
+                    <DueText isLessThanOneHour={isLessThanOneHour}>
                       마감{" "}
-                    </Text>
+                    </DueText>
                   )}
-                  {dueTime.days > 0 && <Text>{dueTime.days}일 </Text>}
-                  {dueTime.hours > 0 && <Text>{dueTime.hours}시간 </Text>}
+                  {dueTime.days > 0 && (
+                    <DueText isLessThanOneHour={isLessThanOneHour}>
+                      {dueTime.days}일{" "}
+                    </DueText>
+                  )}
+                  {dueTime.hours > 0 && (
+                    <DueText isLessThanOneHour={isLessThanOneHour}>
+                      {dueTime.hours}시간{" "}
+                    </DueText>
+                  )}
                   {dueTime.minutes > 0 && (
-                    <Text style={isLessThanOneHour ? { color: "red" } : null}>
+                    <DueText isLessThanOneHour={isLessThanOneHour}>
                       {dueTime.minutes}분
-                    </Text>
+                    </DueText>
                   )}
-                  <Text style={isLessThanOneHour ? { color: "red" } : null}>
-                    전
-                  </Text>
-                </View>
-                <View>
-                  <Text style={{ marginLeft: 10, color: "#5892FF" }}>
-                    ₩ {price}
-                  </Text>
+                  <DueText>전</DueText>
                 </View>
               </View>
             </View>
 
             <View style={{ padding: 20 }}>
-              <Text>{content}</Text>
+              <Text>{truncatedContent}</Text>
             </View>
           </View>
           <View style={{ flexDirection: "row" }}>
@@ -287,45 +253,5 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     flexDirection: "column",
-//   },
-
-//   header: {
-//     alignSelf: "flex-start",
-//     padding: 10,
-//   },
-
-//   content: {
-//     flex: 1,
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//   },
-
-//   image: {
-//     width: 200,
-//     height: 200,
-//     borderRadius: 100,
-//     marginBottom: 20,
-//   },
-
-//   content__child: {
-//     justifyContent: "center",
-//     alignItems: "center",
-//     borderBottomWidth: 1,
-//     borderBottomColor: "black",
-//     width: "100%",
-//   },
-
-//   btnContainer: {
-//     flexDirection: "row",
-//     justifyContent: "space-around",
-//     width: "100%",
-//     paddingBottom: 20,
-//   },
-// });
 
 export default MyPostDetail;

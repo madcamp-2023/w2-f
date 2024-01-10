@@ -15,8 +15,6 @@ import axios from "axios";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesgin from "react-native-vector-icons/AntDesign";
-import Entypo from "react-native-vector-icons/Entypo";
-import Feather from "react-native-vector-icons/Feather";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -168,14 +166,14 @@ const ProfileEdit = () => {
                 style={{
                   backgroundColor: "#5892FF",
                   borderRadius: 30,
-                  padding: 5,
                 }}
               >
-                {location ? (
-                  <Feather name="edit" size={25} color="#fff" />
-                ) : (
-                  <AntDesgin name="pluscircleo" size={25} color="#fff" />
-                )}
+                <AntDesgin
+                  name="pluscircleo"
+                  size={25}
+                  color="#fff"
+                  style={{ backgroundColor: "#5892FF", borderRadius: 40 }}
+                />
               </TouchableOpacity>
             </View>
           </View>

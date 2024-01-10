@@ -38,7 +38,6 @@ export default function PostMap() {
           longitude: parseFloat(post.longitude),
           title: post.title,
           description: post.location,
-          due: post.due,
         }));
 
         const calculateTimeLeft = (due) => {

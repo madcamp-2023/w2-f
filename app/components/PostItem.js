@@ -66,8 +66,8 @@ const PostItem = ({
     <TouchableOpacity
       style={styles.postContainer}
       onPress={() => {
-        console.log(user.id, user_id);
         if (user && user.id === user_id) {
+          console.log("image", image);
           navigation.navigate("MyPostDetail", {
             id,
             user_id,

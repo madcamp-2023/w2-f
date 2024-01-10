@@ -59,24 +59,6 @@ export default function PostEdit({ route }) {
     }
     const due = combineDateTime(newDate, newtime);
 
-    console.log(
-      "!!!!",
-      "id:",
-      id,
-      "image:",
-      newImage,
-      "title:",
-      newTitle,
-      "body:",
-      newBody,
-      "location:",
-      newLocation,
-      "price:",
-      newPrice,
-      "due:",
-      due
-    );
-
     setPostRefresh((prev) => !prev);
     navigation.goBack();
     await axios

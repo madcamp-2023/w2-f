@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  Button,
-  FlatList,
   Image,
   Pressable,
   ScrollView,
@@ -11,25 +9,23 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Dimensions,
 } from "react-native";
 import axios from "axios";
 import AntDesgin from "react-native-vector-icons/AntDesign";
-import Entypo from "react-native-vector-icons/Entypo";
-import Feather from "react-native-vector-icons/Feather";
-
 import * as ImagePicker from "expo-image-picker";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { useNavigation } from "@react-navigation/native";
 
-import LabelInput from "./LabelInput";
 import PostDatePicker from "./PostDatePicker";
 
 import { postRefreshState, userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
 
 import DefaultImage from "../assets/defaultImage.png";
-import { blue_color, gray_color } from "../recoil/color";
+import { gray_color } from "../recoil/color";
+
+const screenWidth = Dimensions.get("window").width;
 
 const LocationItem = ({ label }) => {
   return (
@@ -45,7 +41,6 @@ const LocationItem = ({ label }) => {
       {label && (
         <View style={{ flexDirection: "row" }}>
           <Text style={{ marginRight: 10 }}>{label}</Text>
-          {/* <Feather name="x" size={15} color="gray" /> */}
         </View>
       )}
     </View>
@@ -68,6 +63,34 @@ export default function PostCreate() {
 
   const [postRefresh, setPostRefresh] = useRecoilState(postRefreshState);
 
+  const uploadImage = async () => {
+    if (!status?.granted) {
+      const permission = await requestPermission();
+      if (!permission.granted) {
+        return null;
+      }
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1, 1],
+      base64: true,
+    });
+
+    if (result.canceled) {
+      return null;
+    }
+
+    const base64Image = `data:image/jpeg;base64,${result.base64}`;
+    setImage(base64Image);
+  };
+
+  const handleSelectLocation = () => {
+    navigation.navigate("SelectLocation", { setLocation: setLocation });
+  };
+
   const handleSubmit = async () => {
     function combineDateTime(date, time) {
       const year = date.getFullYear();
@@ -79,21 +102,8 @@ export default function PostCreate() {
 
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
-    console.log("date, time", date, time);
     const due = combineDateTime(date, time);
 
-    //TODO : 한 개라도 안적거나 선택안하면 경고창
-    console.log(
-      image,
-      title,
-      body,
-      location,
-      price,
-      user.id,
-      user.name,
-      user.image,
-      due
-    );
     await axios
       .post(URI + "/post/create", {
         image: image,
@@ -110,33 +120,6 @@ export default function PostCreate() {
         setPostRefresh((prev) => !prev);
         navigation.navigate("PostHome");
       });
-  };
-
-  const uploadImage = async () => {
-    if (!status?.granted) {
-      const permission = await requestPermission();
-      if (!permission.granted) {
-        return null;
-      }
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      quality: 1,
-      aspect: [1, 1],
-    });
-
-    if (result.canceled) {
-      return null;
-    }
-
-    const uri = result.assets[0].uri;
-    setImage(uri);
-  };
-
-  const handleSelectLocation = () => {
-    navigation.navigate("SelectLocation", { setLocation: setLocation });
   };
 
   return (
@@ -203,14 +186,14 @@ export default function PostCreate() {
                     style={{
                       backgroundColor: "#5892FF",
                       borderRadius: 30,
-                      padding: 5,
                     }}
                   >
-                    {location ? (
-                      <Feather name="edit" size={25} color="#fff" />
-                    ) : (
-                      <AntDesgin name="pluscircleo" size={25} color="#fff" />
-                    )}
+                    <AntDesgin
+                      name="pluscircleo"
+                      size={25}
+                      color="#fff"
+                      style={{ backgroundColor: "#5892FF", borderRadius: 40 }}
+                    />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -229,7 +212,13 @@ export default function PostCreate() {
                 alignItems: "center",
               }}
             >
-              <Text style={{ color: "white" }}>업로드하기</Text>
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                업로드하기
+              </Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
@@ -245,9 +234,9 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 150,
-    height: 150,
-    marginBottom: 30,
+    width: screenWidth,
+    height: 200,
+    resizeMode: "cover",
   },
 
   imageContainer: {
