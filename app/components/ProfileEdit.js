@@ -20,6 +20,8 @@ import { useNavigation } from "@react-navigation/native";
 
 import LabelInput from "./LabelInput";
 
+import DefaultImage from "../assets/defaultImage.png";
+
 import { userState } from "../recoil/recoil";
 import { URI } from "../recoil/constant";
 
@@ -115,18 +117,7 @@ const ProfileEdit = () => {
         <View style={styles.imageContainer}>
           <Pressable onPress={uploadImage}>
             {/* <Image source={{ uri: imageUrl }} style={styles.image} /> */}
-            <Image
-              source={
-                imageUrl
-                  ? {
-                      uri: imageUrl.startsWith("data:image/jpeg;base64,")
-                        ? imageUrl
-                        : `data:image/jpeg;base64,${imageUrl}`,
-                    }
-                  : DefaultImage
-              }
-              style={styles.image}
-            />
+            <Image source={DefaultImage} style={styles.image} />
             <FontAwesome
               name="camera"
               size={27}

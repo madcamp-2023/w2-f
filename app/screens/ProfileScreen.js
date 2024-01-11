@@ -111,15 +111,7 @@ export default function ProfileScreen() {
         /> */}
 
         <Image
-          source={
-            user.image
-              ? {
-                  uri: user.image.startsWith("data:image/jpeg;base64,")
-                    ? user.image
-                    : `data:image/jpeg;base64,${user.image}`,
-                }
-              : DefaultImage
-          }
+          source={user.image}
           style={{ width: 120, height: 120, borderRadius: 100 }}
         />
         <View
