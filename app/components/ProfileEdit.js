@@ -42,7 +42,9 @@ const LocationItem = ({ label }) => {
   );
 };
 
-const ProfileEdit = () => {
+const ProfileEdit = ({ route }) => {
+  const { setLoc } = route.params;
+
   const [user, setUser] = useRecoilState(userState);
   const navigation = useNavigation();
 
@@ -83,28 +85,30 @@ const ProfileEdit = () => {
   };
 
   const handleSubmit = async () => {
-    await axios
-      .patch(URI + "/user", {
-        id: user.id,
-        bio: bio,
-        image: imageUrl,
-        location: location,
-        name: name,
-      })
-      .then((response) => {
-        navigation.navigate("ProfileHome");
+    setLoc(location);
+    navigation.navigate("ProfileHome");
+    // await axios
+    //   .patch(URI + "/user", {
+    //     id: user.id,
+    //     bio: bio,
+    //     image: imageUrl,
+    //     location: location,
+    //     name: name,
+    //   })
+    //   .then((response) => {
+    //     navigation.navigate("ProfileHome");
 
-        const userData = response.data;
-        const { bio, id, image, kakao_id, location, name } = userData;
-        setUser({
-          id: id,
-          name: name,
-          image: `data:image/jpeg;base64,${image}`,
-          bio: bio,
-          kakao_id: kakao_id,
-          location: location,
-        });
-      });
+    //     const userData = response.data;
+    //     const { bio, id, image, kakao_id, location, name } = userData;
+    //     setUser({
+    //       id: id,
+    //       name: name,
+    //       image: `data:image/jpeg;base64,${image}`,
+    //       bio: bio,
+    //       kakao_id: kakao_id,
+    //       location: location,
+    //     });
+    //   });
   };
 
   const handleSelectLocation = () => {
@@ -119,7 +123,7 @@ const ProfileEdit = () => {
             {/* <Image source={{ uri: imageUrl }} style={styles.image} /> */}
             <Image source={DefaultImage} style={styles.image} />
             <FontAwesome
-              name="camera"
+              name='camera'
               size={27}
               style={styles.iconOverlay}
               onPress={uploadImage}
@@ -127,13 +131,13 @@ const ProfileEdit = () => {
           </Pressable>
         </View>
         <LabelInput
-          label="이름"
+          label='이름'
           value={name}
           onChangeText={setName}
           placeholder={user.name}
         />
         <LabelInput
-          label="자기소개"
+          label='자기소개'
           value={bio}
           onChangeText={setBio}
           placeholder={user.bio === null ? "자기소개를 입력하세요." : user.bio}
@@ -173,9 +177,9 @@ const ProfileEdit = () => {
                 }}
               >
                 <AntDesgin
-                  name="pluscircleo"
+                  name='pluscircleo'
                   size={25}
-                  color="#fff"
+                  color='#fff'
                   style={{ backgroundColor: "#5892FF", borderRadius: 40 }}
                 />
               </TouchableOpacity>

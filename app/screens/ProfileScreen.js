@@ -69,8 +69,10 @@ export default function ProfileScreen() {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [loc, setLoc] = useState(user.location);
+
   const handlePress = () => {
-    navigation.navigate("ProfileEdit");
+    navigation.navigate("ProfileEdit", { setLoc: setLoc });
   };
 
   useEffect(() => {
@@ -140,7 +142,7 @@ export default function ProfileScreen() {
           </View>
           <View>
             <GrayItem>주요 위치</GrayItem>
-            {user.location && <LocationItem location={user.location} />}
+            {loc && <LocationItem location={loc} />}
           </View>
         </View>
       </View>
@@ -185,7 +187,7 @@ export default function ProfileScreen() {
                     price={price}
                     location={location}
                     due={due}
-                    prev="ProfileHome"
+                    prev='ProfileHome'
                   />
                 );
               }}
